@@ -48,9 +48,8 @@ export default function GalleryPage() {
                 <button
                   key={cat}
                   onClick={() => setFilter(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-500 transition-all duration-300 ${
-                    filter === cat ? "bg-forest-600 text-cream-50" : "bg-cream-100 text-charcoal-700 hover:bg-cream-200"
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-500 transition-all duration-300 ${filter === cat ? "bg-forest-600 text-cream-50" : "bg-cream-100 text-charcoal-700 hover:bg-cream-200"
+                    }`}
                 >
                   {cat === "All" ? "All" : categoryLabels[cat]}
                 </button>
