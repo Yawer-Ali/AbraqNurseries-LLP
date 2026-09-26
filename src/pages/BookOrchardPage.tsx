@@ -1,144 +1,193 @@
 import { useState } from "react";
-import { Check, User, Phone, Mail, MapPin, Calendar, MessageSquare, Send } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { Check, User, Phone, Mail, MapPin, Calendar, MessageSquare, Send, ArrowUpRight } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
+import PageHero from "../components/PageHero";
 import { services } from "../data/services";
 import { company } from "../data/company";
+import { submitEnquiry, revealResult } from "../utils/enquiry";
+import EnquiryDelivery, { type DeliveryResult } from "../components/EnquiryDelivery";
 
 export default function BookOrchardPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [delivery, setDelivery] = useState<DeliveryResult | null>(null);
+  // Quick-book links pass ?service=<id> to pre-select the service
+  const [params] = useSearchParams();
+  const requested = params.get("service");
+  const initialService = services.some((s) => s.id === requested) ? (requested as string) : services[0].id;
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
     location: "",
     area: "",
-    service: services[0].id,
+    service: initialService,
     timeline: "",
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSending(true);
+    const serviceTitle = services.find((s) => s.id === form.service)?.title ?? form.service;
+    const subject = `Orchard booking: ${serviceTitle} — ${form.name}`;
+    const result = await submitEnquiry(
+      subject,
+      {
+        Name: form.name,
+        Phone: form.phone,
+        Email: form.email,
+        "Land location": form.location,
+        "Land area": form.area,
+        Service: serviceTitle,
+        Timeline: form.timeline,
+        Message: form.message,
+      },
+      form.email || undefined,
+    );
+    setDelivery({ subject, ...result });
+    setSending(false);
     setSubmitted(true);
+    revealResult("enquiry-result");
   };
 
   return (
-    <div className="pt-20">
-      <section className="relative min-h-[40vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/7656739/pexels-photo-7656739.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Planting a sapling"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <div className="max-w-2xl">
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">Get Started</span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display">
-              Book an orchard<br /><span className="italic font-400 text-honey-200">consultation</span>
-            </h1>
-            <p className="mt-5 text-cream-100/80 text-lg max-w-xl">
-              Tell us about your land and goals. We'll get back within 48 hours
-              with a site visit plan and estimate.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div>
+      <PageHero
+        image="/images/real/measuring-planting-lines-1600.webp"
+        imagePosition="100% 45%"
+        alt="Measuring out planting lines on a new orchard site"
+        eyebrow="Get Started"
+        title="Book an orchard"
+        accent="consultation"
+        description="Tell us about your land and goals. We'll get back within 48 hours with a site visit plan and estimate."
+      />
 
-      <section className="py-20 md:py-28 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide max-w-3xl">
-            {submitted ? (
-              <div className="bg-cream-50 rounded-3xl p-10 md:p-14 border border-cream-200 text-center shadow-lg">
-                <span className="flex items-center justify-center w-16 h-16 rounded-full bg-forest-100 text-forest-600 mx-auto mb-5">
-                  <Check className="w-8 h-8" strokeWidth={2.5} />
-                </span>
-                <h2 className="text-2xl font-600 text-forest-900 font-display mb-3">Request received!</h2>
-                <p className="text-charcoal-700/70 max-w-md mx-auto">
-                  Thank you, {form.name || "friend"}. Our team will review your
-                  request and contact you within 48 hours to schedule a site visit.
-                </p>
-                <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm({ name: "", phone: "", email: "", location: "", area: "", service: services[0].id, timeline: "", message: "" });
-                  }}
-                  className="mt-6 text-forest-600 font-500 hover:text-forest-800 transition-colors text-sm"
-                >
-                  Submit another request
-                </button>
+      <section className="py-24 md:py-32 bg-cream-100 paper-grain">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            {/* Side panel */}
+            <ScrollReveal className="lg:col-span-4 lg:sticky lg:top-28">
+              <div className="relative rounded-[1.75rem] overflow-hidden bg-forest-900 text-cream-50">
+                <div className="aspect-[4/3] lg:aspect-[4/5] relative">
+                  <img src="/images/trellis/dsc08851.webp" alt="Blossoming high-density trellis rows" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-900 via-forest-900/30 to-transparent" />
+                </div>
+                <div className="relative -mt-24 p-7 md:p-8">
+                  <span className="eyebrow !text-honey-300">Site visit</span>
+                  <p className="mt-4 font-display text-3xl leading-tight">
+                    Response within <span className="serif-italic text-honey-200">48 hours</span>
+                  </p>
+                  <a href={`tel:${company.phone}`} className="mt-8 flex items-center justify-between gap-4 pt-6 border-t border-cream-50/15 group">
+                    <span>
+                      <span className="block text-[10px] tracking-[0.25em] uppercase text-cream-200/55">Call us directly</span>
+                      <span className="block mt-1 text-lg font-600 group-hover:text-honey-200 transition-colors">{company.phone}</span>
+                    </span>
+                    <span className="w-11 h-11 rounded-full border border-cream-50/25 flex items-center justify-center group-hover:bg-honey-400 group-hover:border-honey-400 group-hover:text-forest-950 transition-all duration-500">
+                      <Phone className="w-4 h-4" />
+                    </span>
+                  </a>
+                </div>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="bg-cream-50 rounded-3xl p-7 md:p-10 border border-cream-200 shadow-lg space-y-5">
-                <h2 className="text-2xl font-600 text-forest-900 font-display">Tell us about your project</h2>
+            </ScrollReveal>
 
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Full Name" icon={User} required>
-                    <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="form-input" placeholder="Your name" />
-                  </Field>
-                  <Field label="Phone" icon={Phone} required>
-                    <input type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="form-input" placeholder="+91 98765 43210" />
-                  </Field>
+            <ScrollReveal delay={120} className="lg:col-span-8">
+              {submitted ? (
+                <div id="enquiry-result" className="bg-cream-50 rounded-[1.75rem] p-10 md:p-16 border border-cream-300 text-center shadow-luxe">
+                  <span className="relative flex items-center justify-center w-20 h-20 rounded-full bg-forest-900 text-honey-200 mx-auto mb-8 animate-scale-in">
+                    <span className="absolute inset-0 rounded-full animate-glow-pulse" />
+                    <Check className="w-9 h-9" strokeWidth={2} />
+                  </span>
+                  <h2 className="display-md text-forest-900">Request <span className="serif-italic text-honey-600">received!</span></h2>
+                  <p className="mt-5 text-charcoal-700/70 max-w-md mx-auto leading-relaxed">
+                    Thank you, {form.name || "friend"}. Our team will review your
+                    request and contact you within 48 hours to schedule a site visit.
+                  </p>
+                  {delivery && <EnquiryDelivery result={delivery} />}
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setForm({ name: "", phone: "", email: "", location: "", area: "", service: services[0].id, timeline: "", message: "" });
+                    }}
+                    className="mt-10 btn-lux btn-ghost-dark"
+                  >
+                    Submit another request
+                  </button>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="bg-cream-50 rounded-[1.75rem] p-7 md:p-12 border border-cream-300 shadow-[0_40px_80px_-50px_rgba(11,26,19,0.4)] space-y-7">
+                  <div className="pb-7 border-b border-cream-300">
+                    <span className="eyebrow">Consultation request</span>
+                    <h2 className="mt-4 font-display text-4xl md:text-5xl text-forest-900">Tell us about your <span className="serif-italic text-honey-600">project</span></h2>
+                  </div>
 
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Email" icon={Mail}>
-                    <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="form-input" placeholder="you@example.com" />
-                  </Field>
-                  <Field label="Land Location" icon={MapPin} required>
-                    <input type="text" required value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })}
-                      className="form-input" placeholder="District / village" />
-                  </Field>
-                </div>
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <Field label="Full Name" icon={User} required>
+                      <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="form-input" placeholder="Your name" />
+                    </Field>
+                    <Field label="Phone" icon={Phone} required>
+                      <input type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        className="form-input" placeholder="+91 98765 43210" />
+                    </Field>
+                  </div>
 
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Land Area" icon={MapPin}>
-                    <input type="text" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })}
-                      className="form-input" placeholder="e.g. 5 acres" />
-                  </Field>
-                  <Field label="Service Needed" icon={Send}>
-                    <select value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })}
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <Field label="Email" icon={Mail}>
+                      <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="form-input" placeholder="you@example.com" />
+                    </Field>
+                    <Field label="Land Location" icon={MapPin} required>
+                      <input type="text" required value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })}
+                        className="form-input" placeholder="District / village" />
+                    </Field>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <Field label="Land Area" icon={MapPin}>
+                      <input type="text" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })}
+                        className="form-input" placeholder="e.g. 5 acres" />
+                    </Field>
+                    <Field label="Service Needed" icon={Send}>
+                      <select value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })}
+                        className="form-input">
+                        {services.map((s) => (
+                          <option key={s.id} value={s.id}>{s.title}</option>
+                        ))}
+                      </select>
+                    </Field>
+                  </div>
+
+                  <Field label="Timeline" icon={Calendar}>
+                    <select value={form.timeline} onChange={(e) => setForm({ ...form, timeline: e.target.value })}
                       className="form-input">
-                      {services.map((s) => (
-                        <option key={s.id} value={s.id}>{s.title}</option>
-                      ))}
+                      <option value="">Select a timeline</option>
+                      <option>Within 1 month</option>
+                      <option>1–3 months</option>
+                      <option>3–6 months</option>
+                      <option>Just exploring</option>
                     </select>
                   </Field>
-                </div>
 
-                <Field label="Timeline" icon={Calendar}>
-                  <select value={form.timeline} onChange={(e) => setForm({ ...form, timeline: e.target.value })}
-                    className="form-input">
-                    <option value="">Select a timeline</option>
-                    <option>Within 1 month</option>
-                    <option>1–3 months</option>
-                    <option>3–6 months</option>
-                    <option>Just exploring</option>
-                  </select>
-                </Field>
+                  <Field label="Message" icon={MessageSquare}>
+                    <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="form-input resize-none" placeholder="Tell us about your land, water access, altitude, and goals..." />
+                  </Field>
 
-                <Field label="Message" icon={MessageSquare}>
-                  <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="form-input resize-none" placeholder="Tell us about your land, water access, altitude, and goals..." />
-                </Field>
-
-                <button type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-forest-600 text-cream-50 rounded-xl font-600 hover:bg-forest-700 transition-all duration-300 hover:scale-[1.01] shadow-md">
-                  <Send className="w-4 h-4" /> Submit Request
-                </button>
-
-                <p className="text-xs text-charcoal-700/50 text-center">
-                  Or call us directly: <a href={`tel:${company.phone}`} className="text-forest-600 font-500">{company.phone}</a>
-                </p>
-              </form>
-            )}
+                  <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-5 sm:justify-between">
+                    <p className="text-xs text-charcoal-700/70 order-2 sm:order-1">
+                      Or call us directly: <a href={`tel:${company.phone}`} className="text-forest-800 font-600 link-underline">{company.phone}</a>
+                    </p>
+                    <button type="submit" disabled={sending} className="btn-lux btn-ink order-1 sm:order-2 w-full sm:w-auto disabled:opacity-60">
+                      <Send className="w-4 h-4" /> {sending ? "Sending..." : "Submit Request"} <ArrowUpRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
     </div>
   );
@@ -147,8 +196,8 @@ export default function BookOrchardPage() {
 function Field({ label, icon: Icon, required, children }: { label: string; icon: typeof User; required?: boolean; children: React.ReactNode }) {
   return (
     <div>
-      <label className="flex items-center gap-1.5 text-sm font-500 text-charcoal-700 mb-1.5">
-        <Icon className="w-3.5 h-3.5 text-forest-500" />
+      <label className="flex items-center gap-2 text-[10px] font-700 tracking-[0.2em] uppercase text-charcoal-700/70 mb-2.5">
+        <Icon className="w-3.5 h-3.5 text-honey-600" />
         {label}{required && <span className="text-apple-500">*</span>}
       </label>
       {children}

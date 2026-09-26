@@ -2,21 +2,29 @@ import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send, Check, User, MessageSquare } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import LocationMapSection from "../components/LocationMapSection";
+import PageHero from "../components/PageHero";
 import { company } from "../data/company";
+import { submitEnquiry, revealResult } from "../utils/enquiry";
+import EnquiryDelivery, { type DeliveryResult } from "../components/EnquiryDelivery";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "General inquiry", message: "" });
+  const [delivery, setDelivery] = useState<DeliveryResult | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
-
-    // Simulate submission delay
-    setTimeout(() => {
-      setStatus("success");
-      setForm({ name: "", email: "", phone: "", subject: "General inquiry", message: "" });
-    }, 1000);
+    const subject = `Website enquiry: ${form.subject} — ${form.name}`;
+    const result = await submitEnquiry(
+      subject,
+      { Name: form.name, Phone: form.phone, Email: form.email, Subject: form.subject, Message: form.message },
+      form.email || undefined,
+    );
+    setDelivery({ subject, ...result });
+    setStatus("success");
+    setForm({ name: "", email: "", phone: "", subject: "General inquiry", message: "" });
+    revealResult("enquiry-result");
   };
 
   const contactInfo = [
@@ -26,83 +34,88 @@ export default function ContactPage() {
     { icon: Clock, label: "Hours", value: company.hours },
   ];
 
-  return (
-    <div className="pt-20">
-      <section className="relative min-h-[45vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/24513297/pexels-photo-24513297.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Gulmarg valley with snowcapped mountains"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <div className="max-w-2xl">
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">Get in Touch</span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display">
-              Let's talk about<br /><span className="italic font-400 text-honey-200">your orchard</span>
-            </h1>
-          </div>
-        </div>
-      </section>
+  const labelCls = "flex items-center gap-2 text-[10px] font-700 tracking-[0.2em] uppercase text-charcoal-700/70 mb-2.5";
 
-      <section className="py-20 md:py-28 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-600 text-forest-900 font-display mb-6">Reach us directly</h2>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  {contactInfo.map((info) => (
-                    <div key={info.label} className="flex items-start gap-3 p-5 bg-cream-100 rounded-2xl border border-cream-200">
-                      <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-forest-100 text-forest-600 flex-shrink-0">
-                        <info.icon className="w-5 h-5" strokeWidth={1.8} />
+  return (
+    <div>
+      <PageHero
+        image="/images/real/netting-mountains-path-1600.webp"
+        alt="Netted orchards beneath the Pir Panjal range"
+        eyebrow="Get in Touch"
+        title="Let's talk about"
+        accent="your orchard"
+      />
+
+      <section className="py-24 md:py-32 bg-cream-50">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-12 gap-14 lg:gap-16">
+            <div className="lg:col-span-5">
+              <ScrollReveal variant="fade">
+                <span className="eyebrow">Reach us directly</span>
+              </ScrollReveal>
+              <ScrollReveal delay={80}>
+                <h2 className="display-md mt-6 text-forest-900">
+                  A conversation <span className="serif-italic text-honey-600">rooted in the valley</span>
+                </h2>
+              </ScrollReveal>
+
+              <div className="mt-10 border-t border-cream-300">
+                {contactInfo.map((info, i) => (
+                  <ScrollReveal key={info.label} delay={120 + i * 80}>
+                    <div className="group flex items-start gap-5 py-6 border-b border-cream-300">
+                      <span className="flex items-center justify-center w-11 h-11 rounded-full border border-cream-300 text-honey-700 flex-shrink-0 group-hover:bg-forest-900 group-hover:border-forest-900 group-hover:text-honey-200 transition-all duration-500">
+                        <info.icon className="w-4 h-4" strokeWidth={1.7} />
                       </span>
-                      <div>
-                        <div className="text-xs font-600 text-forest-500 uppercase tracking-wide">{info.label}</div>
+                      <div className="min-w-0">
+                        <div className="text-[10px] font-700 text-charcoal-700/70 uppercase tracking-[0.25em]">{info.label}</div>
                         {info.href ? (
-                          <a href={info.href} className="text-charcoal-800 font-500 mt-0.5 hover:text-forest-600 transition-colors text-sm block">
+                          <a href={info.href} className="mt-1.5 inline-block font-display text-2xl text-forest-900 hover:text-honey-700 transition-colors break-all">
                             {info.value}
                           </a>
                         ) : (
-                          <div className="text-charcoal-800 font-500 mt-0.5 text-sm">{info.value}</div>
+                          <div className="mt-1.5 text-forest-900 font-500 leading-relaxed">{info.value}</div>
                         )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </ScrollReveal>
+                ))}
+              </div>
 
-                <div className="mt-6 rounded-3xl overflow-hidden border border-cream-200 aspect-[4/3] bg-cream-100">
+              <ScrollReveal delay={420} variant="mask">
+                <div className="mt-10 rounded-[1.5rem] overflow-hidden aspect-[4/3] bg-cream-200 border border-cream-300">
                   <iframe
                     title="Abraq Nurseries location"
                     src="https://www.openstreetmap.org/export/embed.html?bbox=74.78%2C34.00%2C74.86%2C34.04&layer=mapnik&marker=34.02%2C74.82"
-                    className="w-full h-full border-0"
+                    className="w-full h-full border-0 grayscale-[30%] sepia-[15%]"
                     loading="lazy"
                   />
                 </div>
-              </div>
+              </ScrollReveal>
+            </div>
 
-              <div className="bg-cream-50 rounded-3xl p-7 md:p-9 shadow-lg border border-cream-200">
+            <ScrollReveal delay={150} className="lg:col-span-7">
+              <div className="bg-cream-100 rounded-[1.75rem] p-7 md:p-12 border border-cream-300 lg:sticky lg:top-28">
                 {status === "success" ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center py-16">
-                    <span className="flex items-center justify-center w-16 h-16 rounded-full bg-forest-100 text-forest-600 mb-5">
-                      <Check className="w-8 h-8" strokeWidth={2.5} />
+                  <div id="enquiry-result" className="h-full flex flex-col items-center justify-center text-center py-16">
+                    <span className="relative flex items-center justify-center w-20 h-20 rounded-full bg-forest-900 text-honey-200 mb-8 animate-scale-in">
+                      <span className="absolute inset-0 rounded-full animate-glow-pulse" />
+                      <Check className="w-9 h-9" strokeWidth={2} />
                     </span>
-                    <h3 className="text-2xl font-600 text-forest-900 font-display mb-2">Message sent!</h3>
-                    <p className="text-charcoal-700/70 max-w-xs">
+                    <h3 className="display-md text-forest-900">Message <span className="serif-italic text-honey-600">sent!</span></h3>
+                    <p className="mt-4 text-charcoal-700/70 max-w-xs">
                       Thank you for reaching out. We'll get back to you within 48 hours.
                     </p>
-                    <button
-                      onClick={() => setStatus("idle")}
-                      className="mt-6 text-forest-600 font-500 hover:text-forest-800 transition-colors text-sm"
-                    >
+                    {delivery && <EnquiryDelivery result={delivery} />}
+                    <button onClick={() => setStatus("idle")} className="mt-10 btn-lux btn-ghost-dark">
                       Send another message
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <h3 className="text-xl font-600 text-forest-900 font-display mb-2">Send a message</h3>
+                  <form onSubmit={handleSubmit} className="space-y-7">
+                    <div className="pb-7 border-b border-cream-300">
+                      <span className="eyebrow">Write to us</span>
+                      <h3 className="mt-4 font-display text-4xl md:text-5xl text-forest-900">Send a <span className="serif-italic text-honey-600">message</span></h3>
+                    </div>
 
                     {status === "error" && (
                       <div className="p-4 bg-apple-50 border border-apple-200 rounded-xl text-sm text-apple-700">
@@ -111,28 +124,28 @@ export default function ContactPage() {
                     )}
 
                     <div>
-                      <label className="flex items-center gap-1.5 text-sm font-500 text-charcoal-700 mb-1.5">
-                        <User className="w-3.5 h-3.5 text-forest-500" /> Name <span className="text-apple-500">*</span>
+                      <label className={labelCls}>
+                        <User className="w-3.5 h-3.5 text-honey-600" /> Name <span className="text-apple-500">*</span>
                       </label>
                       <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                         className="form-input" placeholder="Your name" />
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="grid sm:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-500 text-charcoal-700 mb-1.5">Email</label>
+                        <label className={labelCls}>Email</label>
                         <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
                           className="form-input" placeholder="you@example.com" />
                       </div>
                       <div>
-                        <label className="block text-sm font-500 text-charcoal-700 mb-1.5">Phone</label>
+                        <label className={labelCls}>Phone</label>
                         <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
                           className="form-input" placeholder="+91 98765 43210" />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-500 text-charcoal-700 mb-1.5">Subject</label>
+                      <label className={labelCls}>Subject</label>
                       <select value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
                         className="form-input">
                         <option>General inquiry</option>
@@ -145,24 +158,24 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label className="flex items-center gap-1.5 text-sm font-500 text-charcoal-700 mb-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 text-forest-500" /> Message <span className="text-apple-500">*</span>
+                      <label className={labelCls}>
+                        <MessageSquare className="w-3.5 h-3.5 text-honey-600" /> Message <span className="text-apple-500">*</span>
                       </label>
                       <textarea required rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                         className="form-input resize-none" placeholder="Tell us about your land, needs, or questions..." />
                     </div>
 
                     <button type="submit" disabled={status === "submitting"}
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-forest-600 text-cream-50 rounded-xl font-600 hover:bg-forest-700 transition-all duration-300 hover:scale-[1.01] shadow-md disabled:opacity-60">
+                      className="btn-lux btn-ink w-full disabled:opacity-60">
                       <Send className="w-4 h-4" />
                       {status === "submitting" ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 )}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
       <LocationMapSection />
