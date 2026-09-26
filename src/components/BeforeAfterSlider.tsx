@@ -44,7 +44,7 @@ export function BeforeAfterSlider({
   return (
     <div
       ref={containerRef}
-      className="relative aspect-[16/9] rounded-3xl overflow-hidden cursor-ew-resize select-none border border-cream-200 shadow-xl group"
+      className="relative aspect-[4/3] sm:aspect-[16/9] rounded-[1.75rem] overflow-hidden cursor-ew-resize select-none shadow-luxe group touch-pan-y"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onTouchStart={(e) => updatePosition(e.touches[0].clientX)}
@@ -61,19 +61,19 @@ export function BeforeAfterSlider({
         />
       </div>
 
-      <span className="absolute top-4 left-4 px-3 py-1.5 bg-charcoal-900/70 backdrop-blur-sm text-cream-50 rounded-full text-xs font-600">
+      <span className="absolute top-5 left-5 px-4 py-2 bg-forest-950/75 backdrop-blur-md text-cream-50 rounded-full text-[10px] font-700 tracking-[0.2em] uppercase border border-cream-50/15">
         {beforeLabel}
       </span>
-      <span className="absolute top-4 right-4 px-3 py-1.5 bg-forest-600/80 backdrop-blur-sm text-cream-50 rounded-full text-xs font-600">
+      <span className="absolute top-5 right-5 px-4 py-2 bg-honey-400/90 backdrop-blur-md text-forest-950 rounded-full text-[10px] font-700 tracking-[0.2em] uppercase">
         {afterLabel}
       </span>
 
       <div
-        className="absolute top-0 bottom-0 w-1 bg-cream-50 shadow-lg pointer-events-none"
+        className="absolute top-0 bottom-0 w-px bg-cream-50 shadow-[0_0_24px_rgba(233,214,168,0.9)] pointer-events-none"
         style={{ left: `${position}%`, transform: "translateX(-50%)" }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-cream-50 shadow-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-          <MoveHorizontal className="w-5 h-5 text-forest-700" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-cream-50/90 backdrop-blur-md border border-honey-400 shadow-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+          <MoveHorizontal className="w-5 h-5 text-forest-900" />
         </div>
       </div>
     </div>

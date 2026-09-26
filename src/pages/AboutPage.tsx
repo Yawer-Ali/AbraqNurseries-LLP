@@ -1,162 +1,171 @@
-import { Leaf, Target, Eye, Users } from "lucide-react";
+import { Target, Eye, Users } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import PolaroidDeck from "../components/PolaroidDeck";
 import LocationMapSection from "../components/LocationMapSection";
 import CTASection from "../components/CTASection";
+import PageHero from "../components/PageHero";
+import SectionHeading from "../components/SectionHeading";
+import AnimatedCounter from "../components/AnimatedCounter";
 import { impactStats } from "../data/company";
 
 export default function AboutPage() {
   return (
-    <div className="pt-20">
-      <section className="relative min-h-[60vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/23710615/pexels-photo-23710615.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Aerial view of Srinagar with surrounding mountains"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <div className="max-w-2xl">
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">About Us</span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display text-balance">
-              Rooted in Kashmir,<br /><span className="italic font-400 text-honey-200">growing for tomorrow</span>
-            </h1>
-          </div>
-        </div>
-      </section>
+    <div>
+      <PageHero
+        image="/images/real/drone-bloom-alley-1600.webp"
+        alt="A blossoming alley in an Abraq high-density orchard, seen from a low drone pass"
+        eyebrow="About Us"
+        title="Rooted in Kashmir,"
+        accent="growing for tomorrow"
+      />
 
-      <section className="py-24 md:py-32 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Leaf className="w-4 h-4 text-forest-500" />
-                  <span className="text-forest-600 text-sm font-600 tracking-wide uppercase">Our Story</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-600 text-forest-900 leading-tight text-balance font-display">
-                  From a single nursery to Kashmir's orchard partner
+      {/* Story */}
+      <section className="py-24 md:py-36 bg-cream-50 overflow-hidden">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-12 gap-14 lg:gap-20 items-center">
+            <div className="lg:col-span-6 order-2 lg:order-1">
+              <ScrollReveal variant="fade">
+                <span className="eyebrow">Our Story</span>
+              </ScrollReveal>
+              <ScrollReveal delay={80}>
+                <h2 className="display-md mt-6 text-forest-900 text-balance">
+                  From a single nursery to <span className="serif-italic text-honey-600">Kashmir's orchard partner</span>
                 </h2>
-                <p className="mt-6 text-charcoal-700 text-lg leading-relaxed">
+              </ScrollReveal>
+              <ScrollReveal delay={160}>
+                <p className="mt-8 text-forest-900/85 text-lg md:text-xl leading-relaxed font-display first-letter:float-left first-letter:text-7xl first-letter:leading-[0.8] first-letter:mr-3 first-letter:mt-1 first-letter:text-honey-600">
                   Abraq Nurseries LLP was founded with a mission to modernize
                   horticulture in Jammu & Kashmir. Based at Wazabagh on the
                   Hyderpora Bypass in Srinagar, we began as a nursery supplying
                   grafted saplings to local growers.
                 </p>
-                <p className="mt-4 text-charcoal-700/80 leading-relaxed">
+              </ScrollReveal>
+              <ScrollReveal delay={220}>
+                <p className="mt-6 text-charcoal-700/75 leading-relaxed">
                   Today, we are a full-service orchard developer — offering
                   turnkey plantation, scientific support, soil testing, and consulting
                   across 12 districts of J&K. Our team combines traditional Kashmiri
                   horticultural knowledge with modern scientific practices to help
                   growers achieve better yields and higher quality fruit.
                 </p>
-                <div className="mt-8 flex flex-wrap gap-3">
+              </ScrollReveal>
+              <ScrollReveal delay={280}>
+                <div className="mt-10 flex flex-wrap gap-2.5">
                   {["Certified saplings", "Scientific methods", "Local expertise", "Full-cycle support"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-4 py-2 bg-forest-50 text-forest-700 rounded-full text-sm font-500 border border-forest-100"
-                    >
+                    <span key={tag} className="chip !text-forest-800 !border-forest-900/20">
+                      <span className="w-1 h-1 rounded-full bg-honey-500" />
                       {tag}
                     </span>
                   ))}
                 </div>
-              </div>
+              </ScrollReveal>
+            </div>
 
-              <div className="relative">
-                <div className="rounded-3xl overflow-hidden shadow-xl aspect-[4/5]">
+            <div className="lg:col-span-6 order-1 lg:order-2 relative">
+              <ScrollReveal variant="mask">
+                <div className="arch overflow-hidden aspect-[4/5] max-w-md ml-auto">
                   <img
-                    src="https://images.pexels.com/photos/15879648/pexels-photo-15879648.jpeg?auto=compress&cs=tinysrgb&h=900&w=720"
-                    alt="Srinagar valley at twilight"
+                    src="/images/nursery/dsc03589.webp"
+                    alt="High-density apple tree laden with fruit in an Abraq orchard"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-6 w-48 h-48 rounded-2xl overflow-hidden shadow-2xl border-4 border-cream-50 hidden sm:block animate-float-slow">
+              </ScrollReveal>
+              <ScrollReveal delay={300} className="absolute -bottom-10 left-0 sm:left-6 w-40 sm:w-56">
+                <div className="rounded-[1.25rem] overflow-hidden aspect-square border-[6px] border-cream-50 shadow-luxe">
                   <img
-                    src="https://images.pexels.com/photos/3127146/pexels-photo-3127146.jpeg?auto=compress&cs=tinysrgb&h=400&w=400"
-                    alt="Saplings in nursery trays"
+                    src="/images/harvest/dsc07836.webp"
+                    alt="Ripe red apples ready for harvest"
                     className="w-full h-full object-cover"
                   />
                 </div>
+              </ScrollReveal>
+              <div className="hidden sm:flex absolute top-10 left-0 w-28 h-28 rounded-full bg-forest-900 text-cream-50 flex-col items-center justify-center text-center shadow-luxe">
+                <span className="numeral text-3xl text-honey-200 leading-none">12</span>
+                <span className="text-[9px] tracking-[0.2em] uppercase mt-1 text-cream-200/70">Districts</span>
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
-      <section className="py-20 bg-forest-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Target,
-                  title: "Our Mission",
-                  text: "To empower Kashmir's growers with certified planting material, scientific knowledge, and end-to-end orchard support — increasing productivity and income across the region.",
-                },
-                {
-                  icon: Eye,
-                  title: "Our Vision",
-                  text: "A Kashmir where every orchard is productive, sustainable, and profitable — where modern horticulture coexists with the valley's natural beauty and heritage.",
-                },
-                {
-                  icon: Users,
-                  title: "Our Values",
-                  text: "Quality over quantity. Science in service of tradition. Honest advice over easy sales. We build relationships that last beyond the first harvest.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="bg-cream-50 rounded-3xl p-8 border border-cream-200 hover-lift transition-all">
-                  <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-forest-100 text-forest-600 mb-5">
-                    <item.icon className="w-6 h-6" strokeWidth={1.8} />
-                  </span>
-                  <h3 className="text-xl font-600 text-forest-900 font-display mb-3">{item.title}</h3>
-                  <p className="text-charcoal-700/70 leading-relaxed text-sm">{item.text}</p>
+      {/* Mission / Vision / Values */}
+      <section className="py-24 md:py-36 bg-pine-gradient text-cream-50">
+        <div className="container-wide">
+          <SectionHeading tone="dark" eyebrow="What guides us" title="Principles that" accent="outlast a season" />
+          <div className="grid md:grid-cols-3 border-t border-cream-50/15">
+            {[
+              {
+                icon: Target,
+                title: "Our Mission",
+                text: "To empower Kashmir's growers with certified planting material, scientific knowledge, and end-to-end orchard support — increasing productivity and income across the region.",
+              },
+              {
+                icon: Eye,
+                title: "Our Vision",
+                text: "A Kashmir where every orchard is productive, sustainable, and profitable — where modern horticulture coexists with the valley's natural beauty and heritage.",
+              },
+              {
+                icon: Users,
+                title: "Our Values",
+                text: "Quality over quantity. Science in service of tradition. Honest advice over easy sales. We build relationships that last beyond the first harvest.",
+              },
+            ].map((item, i) => (
+              <ScrollReveal key={item.title} delay={i * 120}>
+                <div className="group h-full pt-10 pb-4 md:px-10 md:first:pl-0 md:[&:not(:first-child)]:border-l border-cream-50/15">
+                  <div className="flex items-center justify-between">
+                    <span className="numeral italic text-honey-300/80">0{i + 1}</span>
+                    <span className="w-12 h-12 rounded-full border border-honey-400/40 flex items-center justify-center text-honey-200 group-hover:bg-honey-400 group-hover:text-forest-950 transition-all duration-500">
+                      <item.icon className="w-5 h-5" strokeWidth={1.6} />
+                    </span>
+                  </div>
+                  <h3 className="mt-10 font-display text-3xl md:text-4xl">{item.title}</h3>
+                  <p className="mt-4 text-cream-100/65 leading-relaxed">{item.text}</p>
                 </div>
-              ))}
-            </div>
+              </ScrollReveal>
+            ))}
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
-      <section className="py-20 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {impactStats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-3xl md:text-5xl font-700 font-display text-forest-700">{stat.number}</div>
-                  <div className="text-sm text-charcoal-700/60 mt-2 font-500">{stat.label}</div>
+      {/* Stats */}
+      <section className="py-20 md:py-28 bg-cream-100 paper-grain">
+        <div className="container-wide">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12">
+            {impactStats.map((stat, i) => (
+              <ScrollReveal key={stat.label} delay={i * 100}>
+                <div className="text-center md:border-l first:border-l-0 border-cream-300 px-4">
+                  <div className="numeral text-5xl md:text-7xl text-forest-900 leading-none">
+                    <AnimatedCounter value={stat.number} />
+                  </div>
+                  <div className="mt-4 text-[11px] tracking-[0.22em] uppercase text-charcoal-700/70">{stat.label}</div>
                 </div>
-              ))}
-            </div>
+              </ScrollReveal>
+            ))}
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
-      <section className="py-20 bg-forest-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="text-center mb-10">
-              <span className="text-forest-600 text-sm font-600 tracking-wide uppercase">Transformation</span>
-              <h2 className="mt-4 text-2xl md:text-4xl font-600 text-forest-900 font-display">
-                Before & after: orchard development
-              </h2>
-              <p className="mt-3 text-charcoal-700/60 max-w-xl mx-auto">
-                Drag the slider to see how we transform raw land into productive orchards.
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <BeforeAfterSlider
-                beforeImage="https://images.pexels.com/photos/7656731/pexels-photo-7656731.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                afterImage="https://images.pexels.com/photos/18607500/pexels-photo-18607500.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                beforeLabel="Before · Raw land"
-                afterLabel="After · Productive orchard"
-              />
-            </div>
-          </div>
-        </ScrollReveal>
+      {/* Transformation */}
+      <section className="py-24 md:py-36 bg-cream-50">
+        <div className="container-wide">
+          <SectionHeading
+            align="center"
+            eyebrow="Transformation"
+            title="Before & after:"
+            accent="orchard development"
+            description="Drag the slider to see how we transform raw land into productive orchards."
+          />
+          <ScrollReveal variant="scale" className="max-w-5xl mx-auto">
+            <BeforeAfterSlider
+              beforeImage="/images/real/raw-land-before-1600.webp"
+              afterImage="/images/real/high-density-rows-laden-1600.webp"
+              beforeLabel="Before · Raw land"
+              afterLabel="After · Productive orchard"
+            />
+          </ScrollReveal>
+        </div>
       </section>
 
       <PolaroidDeck />

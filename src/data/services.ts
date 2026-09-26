@@ -23,7 +23,7 @@ export const services: Service[] = [
     longDescription:
       "We transform raw land into productive orchards. Our team handles site assessment, soil analysis, variety selection based on micro-climate, layout planning, planting, drip irrigation installation, and full first-year care. We've developed over 200 orchards across 12 districts of J&K.",
     icon: "sprout",
-    image: "https://images.pexels.com/photos/7656739/pexels-photo-7656739.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/young-orchard-block-1600.webp",
     features: [
       "Land & soil suitability assessment",
       "Variety selection by micro-climate",
@@ -51,7 +51,7 @@ export const services: Service[] = [
     longDescription:
       "Our nursery at Wazabagh produces grafted saplings on certified rootstocks for apples, cherries, pears, plums, apricots, pomegranates, almonds, and walnuts. Every sapling is disease-free, climate-matched, and comes with planting guidance. Bulk orders for orchard developers are our specialty.",
     icon: "leaf",
-    image: "https://images.pexels.com/photos/3127146/pexels-photo-3127146.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/planting-sapling-father-son-1600.webp",
     features: [
       "25+ fruit varieties",
       "Certified disease-free stock",
@@ -78,7 +78,7 @@ export const services: Service[] = [
     longDescription:
       "We bring scientific horticulture to your existing orchard. Our experts provide seasonal pruning, nutrient management plans, integrated pest and disease management, high-density planting systems (HDP), and canopy management. We help you maximize yield and fruit quality using modern, sustainable practices.",
     icon: "scissors",
-    image: "https://images.pexels.com/photos/7509487/pexels-photo-7509487.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/tractor-spraying-bloom-1600.webp",
     features: [
       "Seasonal pruning & training",
       "Soil & nutrient management",
@@ -105,7 +105,7 @@ export const services: Service[] = [
     longDescription:
       "Before you plant, know your soil. Our lab partners provide detailed analysis of pH, electrical conductivity, organic carbon, macro and micronutrients, and water quality. Results include amendment recommendations tailored to your target crop. Essential for new orchard sites and diagnosing problems in existing ones.",
     icon: "flask",
-    image: "https://images.pexels.com/photos/8851253/pexels-photo-8851253.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/soil-probe-drip-1600.webp",
     features: [
       "pH & EC analysis",
       "Macro & micronutrient profiling",
@@ -132,7 +132,7 @@ export const services: Service[] = [
     longDescription:
       "Our consulting practice serves everyone from smallholders to large investors and government programs. We provide feasibility studies, orchard business plans, subsidy documentation, technical training for field staff, and ongoing advisory retainer arrangements. We also work with institutions on research and extension projects.",
     icon: "compass",
-    image: "https://images.pexels.com/photos/5231041/pexels-photo-5231041.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/field-demonstration-1600.webp",
     features: [
       "Feasibility studies",
       "Orchard business plans",

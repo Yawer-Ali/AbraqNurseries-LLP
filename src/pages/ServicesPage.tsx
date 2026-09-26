@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { Sprout, Scissors, Leaf, FlaskConical, Compass, ArrowRight } from "lucide-react";
+import { Sprout, Scissors, Leaf, FlaskConical, Compass, ArrowUpRight } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import SoilLabSpectrometer from "../components/SoilLabSpectrometer";
+import { ModernBentoFeatures } from "../components/ModernBentoFeatures";
 import CTASection from "../components/CTASection";
+import PageHero from "../components/PageHero";
 import { services } from "../data/services";
 
 const iconMap: Record<string, typeof Sprout> = {
@@ -15,71 +17,69 @@ const iconMap: Record<string, typeof Sprout> = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20">
-      <section className="relative min-h-[50vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/7656731/pexels-photo-7656731.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Planting a tree sapling"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <div className="max-w-2xl">
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">Our Services</span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display text-balance">
-              Full-cycle orchard<br /><span className="italic font-400 text-honey-200">support services</span>
-            </h1>
-            <p className="mt-5 text-cream-100/80 text-lg max-w-xl">
-              From soil to harvest — everything you need to establish and
-              maintain a productive orchard in Kashmir.
-            </p>
-          </div>
+    <div>
+      <PageHero
+        image="/images/real/net-crew-ladders-1600.webp"
+        imagePosition="100% 40%"
+        alt="The Abraq team installing anti-hail netting over an orchard"
+        eyebrow="Our Services"
+        title="Full-cycle orchard"
+        accent="support services"
+        description="From soil to harvest — everything you need to establish and maintain a productive orchard in Kashmir."
+      />
+
+      <section className="py-24 md:py-36 bg-cream-50 overflow-hidden">
+        <div className="container-wide space-y-24 md:space-y-36">
+          {services.map((s, i) => {
+            const Icon = iconMap[s.icon] ?? Sprout;
+            const flip = i % 2 === 1;
+            return (
+              <Link key={s.id} to={`/services/${s.id}`} className="group grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+                <ScrollReveal
+                  variant="mask"
+                  className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}
+                >
+                  <div className="relative aspect-[16/11] rounded-[1.75rem] overflow-hidden img-zoom">
+                    <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-forest-950/40 to-transparent" />
+                    <span className="absolute top-5 left-5 w-12 h-12 rounded-full glass-card flex items-center justify-center text-cream-50">
+                      <Icon className="w-5 h-5" strokeWidth={1.6} />
+                    </span>
+                  </div>
+                </ScrollReveal>
+
+                <div className={`lg:col-span-5 ${flip ? "lg:order-1" : ""}`}>
+                  <ScrollReveal delay={100}>
+                    {/* Decorative ornament numeral — drawn via CSS so it isn't read or treated as body text */}
+                    <span
+                      aria-hidden="true"
+                      data-num={`0${i + 1}`}
+                      className="numeral italic text-7xl md:text-8xl text-honey-500/35 leading-none block select-none before:content-[attr(data-num)]"
+                    />
+                  </ScrollReveal>
+                  <ScrollReveal delay={160}>
+                    <span className="eyebrow mt-4">{s.tagline}</span>
+                    <h3 className="mt-5 font-display text-4xl md:text-5xl text-forest-900 leading-[1.02] group-hover:text-honey-700 transition-colors duration-500">
+                      {s.title}
+                    </h3>
+                  </ScrollReveal>
+                  <ScrollReveal delay={220}>
+                    <p className="mt-5 text-charcoal-700/70 leading-relaxed text-base md:text-lg">{s.description}</p>
+                    <span className="mt-8 inline-flex items-center gap-4 text-sm font-700 tracking-wide text-forest-900">
+                      <span className="w-12 h-12 rounded-full border border-forest-900/25 flex items-center justify-center group-hover:bg-forest-900 group-hover:text-cream-50 group-hover:border-forest-900 transition-all duration-500">
+                        <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-500" />
+                      </span>
+                      Learn more
+                    </span>
+                  </ScrollReveal>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
-      <section className="py-24 md:py-32 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-              {services.map((s, i) => {
-                const Icon = iconMap[s.icon] ?? Sprout;
-                return (
-                  <Link
-                    key={s.id}
-                    to={`/services/${s.id}`}
-                    className="group flex flex-col bg-cream-50 rounded-3xl overflow-hidden border border-cream-200 hover:border-forest-200 hover:shadow-xl transition-all duration-400"
-                  >
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <img
-                        src={s.image}
-                        alt={s.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <span className="absolute top-4 left-4 flex items-center justify-center w-12 h-12 rounded-2xl bg-cream-50/90 backdrop-blur-sm text-forest-700">
-                        <Icon className="w-6 h-6" strokeWidth={1.8} />
-                      </span>
-                      <span className="absolute top-4 right-4 text-5xl font-700 font-display text-cream-50/40">
-                        0{i + 1}
-                      </span>
-                    </div>
-                    <div className="p-6 md:p-7 flex flex-col flex-1">
-                      <span className="text-xs font-600 text-honey-600 uppercase tracking-wide">{s.tagline}</span>
-                      <h3 className="mt-2 text-xl font-600 text-forest-900 font-display">{s.title}</h3>
-                      <p className="mt-3 text-sm text-charcoal-700/70 leading-relaxed flex-1">{s.description}</p>
-                      <div className="mt-5 flex items-center gap-2 text-forest-600 font-600 text-sm group-hover:text-forest-800 transition-colors">
-                        Learn more
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
+      <ModernBentoFeatures />
 
       <SoilLabSpectrometer />
 

@@ -12,7 +12,9 @@ export const company = {
     pincode: "190014",
     country: "India",
   },
-  phone: "+91 70060 12345",
+  phone: "+91 70067 06233",
+  /** International digits for wa.me links */
+  whatsapp: "917006706233",
   email: "info@abraqnurseries.com",
   hours: "Mon–Sat · 9:00 AM – 6:00 PM",
   mapEmbed:
@@ -20,7 +22,7 @@ export const company = {
   social: {
     instagram: "#",
     facebook: "#",
-    youtube: "#",
+    youtube: "https://www.youtube.com/@AbraqNurseriesLLP",
   },
 };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import { faqItems } from "../data/faq";
 
@@ -7,53 +7,79 @@ export function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="py-24 md:py-32 bg-cream-100">
-      <ScrollReveal>
-        <div className="container-wide max-w-3xl">
-          <div className="text-center mb-12">
-            <span className="text-forest-600 text-sm font-600 tracking-wide uppercase">FAQ</span>
-            <h2 className="mt-4 text-3xl md:text-5xl font-600 text-forest-900 leading-tight font-display">
-              Questions we hear<br /><span className="italic font-400 text-gradient-green">often</span>
-            </h2>
+    <section className="py-24 md:py-36 bg-cream-50">
+      <div className="container-wide">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Sticky editorial title */}
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-32">
+              <ScrollReveal variant="fade">
+                <div className="flex items-center gap-4">
+                  <span className="numeral text-sm italic text-honey-700">(09)</span>
+                  <span className="eyebrow">FAQ</span>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal delay={80}>
+                <h2 className="display-lg mt-6 text-forest-900">
+                  Questions we hear <span className="serif-italic text-honey-600">often</span>
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal delay={160} variant="mask" className="hidden lg:block mt-10">
+                <div className="arch w-48 aspect-[3/4] overflow-hidden">
+                  <img src="/images/trellis/dsc08864.webp" alt="" aria-hidden="true" className="w-full h-full object-cover" loading="lazy" />
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            {faqItems.map((item, i) => (
-              <div
-                key={i}
-                className={`bg-cream-50 rounded-2xl border transition-all duration-300 overflow-hidden ${
-                  open === i ? "border-forest-300 shadow-md" : "border-cream-200"
-                }`}
-              >
-                <button
-                  onClick={() => setOpen(open === i ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left group"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors duration-300 ${
-                      open === i ? "bg-forest-600 text-cream-50" : "bg-forest-50 text-forest-600"
-                    }`}>
-                      <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${open === i ? "rotate-180" : ""}`} />
-                    </span>
-                    <h3 className="text-base md:text-lg font-600 text-forest-900 font-display">{item.question}</h3>
+          {/* Accordion */}
+          <div className="lg:col-span-8 border-t border-cream-300">
+            {faqItems.map((item, i) => {
+              const isOpen = open === i;
+              return (
+                <ScrollReveal key={i} delay={Math.min(i, 5) * 60}>
+                  <div className="border-b border-cream-300">
+                    <button
+                      onClick={() => setOpen(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                      className="w-full flex items-start justify-between gap-6 py-7 md:py-8 text-left group"
+                    >
+                      <div className="flex items-start gap-5 md:gap-8 min-w-0">
+                        <span className={`numeral italic text-sm pt-2 transition-colors ${isOpen ? "text-honey-700" : "text-charcoal-700/70"}`}>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-700 tracking-[0.22em] uppercase text-honey-700">{item.category}</span>
+                          <h3 className={`mt-1.5 font-display text-2xl md:text-[1.9rem] leading-snug transition-colors duration-300 ${isOpen ? "text-forest-900" : "text-forest-900/80 group-hover:text-forest-900"}`}>
+                            {item.question}
+                          </h3>
+                        </div>
+                      </div>
+                      <span
+                        className={`mt-2 shrink-0 w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-500 ${
+                          isOpen ? "bg-forest-900 border-forest-900 text-cream-50 rotate-45" : "border-cream-300 text-forest-900 group-hover:border-forest-900"
+                        }`}
+                      >
+                        <Plus className="w-4 h-4" />
+                      </span>
+                    </button>
+                    <div
+                      className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                      style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="pb-8 pl-10 md:pl-[3.75rem] pr-14 text-charcoal-700/75 leading-relaxed text-base">
+                          {item.answer}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-500 text-forest-500 bg-forest-50 px-2.5 py-1 rounded-full flex-shrink-0">
-                    {item.category}
-                  </span>
-                </button>
-                <div
-                  className="overflow-hidden transition-all duration-400 ease-out"
-                  style={{ maxHeight: open === i ? "300px" : "0px" }}
-                >
-                  <p className="px-5 md:px-6 pb-5 md:pb-6 pl-16 text-charcoal-700/70 leading-relaxed text-sm md:text-base">
-                    {item.answer}
-                  </p>
-                </div>
-              </div>
-            ))}
+                </ScrollReveal>
+              );
+            })}
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

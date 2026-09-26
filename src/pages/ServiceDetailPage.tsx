@@ -1,7 +1,18 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { Sprout, Scissors, Leaf, FlaskConical, Compass, Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { Sprout, Scissors, Leaf, FlaskConical, Compass, Check, ArrowRight, ArrowLeft, ArrowUpRight } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import CTASection from "../components/CTASection";
+import PageHero from "../components/PageHero";
+import FieldFilms from "../components/FieldFilms";
+
+// Channel films that show each service in practice
+const serviceFilms: Record<string, string[]> = {
+  "orchard-development": ["267HeSApgXs", "aEgfGYaqJzw", "-a2PhaziAik", "iQ4BR1uiM1w", "v6ftyeYwcS0"],
+  "nursery-saplings": ["LL015R8U28k", "EftSQMYWu4c", "pFLWjZgXSFk", "e36xDNf9LTc", "90ZcQGoTFe0"],
+  "scientific-plantation": ["PZfOqeoDPZI", "F2O31SxSoXA", "iYQpAF1YaMA", "90ZcQGoTFe0", "PaBA1SsZ0ic"],
+  "soil-testing": ["e36xDNf9LTc", "BObJ6rr_VcA", "EftSQMYWu4c", "LL015R8U28k"],
+  consulting: ["PZfOqeoDPZI", "F2O31SxSoXA", "PaBA1SsZ0ic", "n3mpeqTXKH4", "coKIJZ7xY4U"],
+};
 import { services } from "../data/services";
 
 const iconMap: Record<string, typeof Sprout> = {
@@ -23,91 +34,115 @@ export default function ServiceDetailPage() {
   const nextService = services[(currentIndex + 1) % services.length];
 
   return (
-    <div className="pt-20">
-      <section className="relative min-h-[55vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <Link to="/services" className="inline-flex items-center gap-2 text-cream-200/80 hover:text-cream-50 transition-colors mb-6 text-sm">
-            <ArrowLeft className="w-4 h-4" /> All Services
-          </Link>
-          <div className="max-w-3xl">
-            <span className="flex items-center justify-center w-14 h-14 rounded-2xl bg-cream-50/15 backdrop-blur-sm text-cream-50 mb-5">
-              <Icon className="w-7 h-7" strokeWidth={1.8} />
+    <div>
+      <PageHero
+        image={service.image}
+        alt={service.title}
+        eyebrow={service.tagline}
+        title={service.title}
+        before={
+          <div className="flex items-center gap-5">
+            <Link to="/services" className="group inline-flex items-center gap-2 text-cream-100/75 hover:text-cream-50 transition-colors text-sm">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> All Services
+            </Link>
+            <span className="w-12 h-12 rounded-full glass-card flex items-center justify-center text-honey-200">
+              <Icon className="w-5 h-5" strokeWidth={1.6} />
             </span>
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">{service.tagline}</span>
-            <h1 className="mt-3 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display">{service.title}</h1>
           </div>
-        </div>
-      </section>
+        }
+      />
 
-      <section className="py-24 md:py-32 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="grid lg:grid-cols-3 gap-10 lg:gap-12">
-              <div className="lg:col-span-2">
-                <h2 className="text-2xl md:text-3xl font-600 text-forest-900 font-display mb-5">Overview</h2>
-                <p className="text-charcoal-700/80 text-lg leading-relaxed">{service.longDescription}</p>
+      <section className="py-24 md:py-36 bg-cream-50">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-12 gap-14 lg:gap-16">
+            <div className="lg:col-span-7">
+              <ScrollReveal variant="fade">
+                <span className="eyebrow">Overview</span>
+              </ScrollReveal>
+              <ScrollReveal delay={80}>
+                <p className="mt-6 font-display text-2xl md:text-[2rem] leading-snug text-forest-900 text-pretty">
+                  {service.longDescription}
+                </p>
+              </ScrollReveal>
 
-                <h3 className="mt-10 text-xl font-600 text-forest-900 font-display mb-5">Our Process</h3>
-                <div className="space-y-4">
-                  {service.process.map((step, i) => (
-                    <div key={step.step} className="flex gap-4 p-5 bg-cream-100 rounded-2xl">
-                      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-forest-600 text-cream-50 font-600 text-sm flex-shrink-0">
+              <ScrollReveal delay={120}>
+                <h3 className="mt-20 display-md text-forest-900">
+                  Our <span className="serif-italic text-honey-600">Process</span>
+                </h3>
+              </ScrollReveal>
+              <ol className="mt-10 relative">
+                <span className="absolute left-[1.35rem] top-2 bottom-2 w-px bg-gradient-to-b from-honey-400 via-cream-300 to-transparent" aria-hidden="true" />
+                {service.process.map((step, i) => (
+                  <ScrollReveal key={step.step} delay={i * 90}>
+                    <li className="relative flex gap-6 pb-10">
+                      <span className="relative z-10 flex items-center justify-center w-11 h-11 rounded-full bg-forest-900 text-honey-200 numeral text-lg flex-shrink-0 ring-8 ring-cream-50">
                         {i + 1}
                       </span>
-                      <div>
-                        <h4 className="font-600 text-forest-900">{step.step}</h4>
-                        <p className="text-sm text-charcoal-700/70 mt-1">{step.description}</p>
+                      <div className="pt-1.5">
+                        <h4 className="font-display text-2xl text-forest-900">{step.step}</h4>
+                        <p className="text-charcoal-700/70 mt-2 leading-relaxed">{step.description}</p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                    </li>
+                  </ScrollReveal>
+                ))}
+              </ol>
+            </div>
 
-              <div className="lg:col-span-1">
-                <div className="bg-cream-100 rounded-3xl p-6 border border-cream-200 sticky top-24">
-                  <h3 className="font-600 text-forest-900 font-display mb-4">What's Included</h3>
-                  <ul className="space-y-3 mb-6">
-                    {service.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-charcoal-700">
-                        <Check className="w-4 h-4 text-forest-500 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-5 border-t border-cream-200">
-                    <div className="text-xs font-600 text-charcoal-700/50 uppercase tracking-wide mb-1">Pricing</div>
-                    <p className="text-sm text-charcoal-800 font-500">{service.pricing}</p>
+            <div className="lg:col-span-5">
+              <div className="lg:sticky lg:top-28">
+                <ScrollReveal variant="scale">
+                  <div className="relative bg-pine-gradient text-cream-50 rounded-[1.75rem] p-7 md:p-9 overflow-hidden">
+                    <div className="absolute inset-3 rounded-[1.25rem] border border-honey-400/20 pointer-events-none" />
+                    <div className="relative">
+                      <h3 className="text-[11px] font-700 tracking-[0.25em] uppercase text-honey-300 font-sans">What's Included</h3>
+                      <ul className="mt-6 space-y-4">
+                        {service.features.map((f) => (
+                          <li key={f} className="flex items-start gap-3 text-sm text-cream-100/85 pb-4 border-b border-cream-50/10 last:border-0 last:pb-0">
+                            <Check className="w-4 h-4 text-honey-300 flex-shrink-0 mt-0.5" strokeWidth={2.2} />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-8 pt-6 border-t border-cream-50/15">
+                        <div className="text-[10px] font-700 text-cream-200/60 uppercase tracking-[0.25em] mb-2">Pricing</div>
+                        <p className="font-display text-xl text-cream-50">{service.pricing}</p>
+                      </div>
+                      <Link to="/services/book-orchard" className="mt-8 btn-lux btn-gold w-full">
+                        Book This Service <ArrowUpRight className="w-4 h-4" />
+                      </Link>
+                    </div>
                   </div>
-                  <Link
-                    to="/services/book-orchard"
-                    className="mt-6 block w-full text-center py-3.5 bg-forest-600 text-cream-50 rounded-xl font-600 hover:bg-forest-700 transition-colors"
-                  >
-                    Book This Service
-                  </Link>
-                </div>
+                </ScrollReveal>
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
-      <section className="py-16 bg-cream-100">
-        <div className="container-wide">
-          <Link
-            to={`/services/${nextService.id}`}
-            className="group flex items-center justify-between p-6 bg-cream-50 rounded-2xl border border-cream-200 hover:border-forest-200 transition-all"
-          >
+      {serviceFilms[service.id] && (
+        <FieldFilms
+          ids={serviceFilms[service.id]}
+          title="See it"
+          accent="in our orchards"
+          description="Short films from our channel showing this work on the ground."
+        />
+      )}
+
+      <section className="bg-cream-100 border-t border-cream-300">
+        <Link
+          to={`/services/${nextService.id}`}
+          className="group block container-wide py-14 md:py-20"
+        >
+          <div className="flex items-center justify-between gap-8">
             <div>
-              <div className="text-xs text-charcoal-700/50 font-500 uppercase tracking-wide">Next Service</div>
-              <div className="text-lg font-600 text-forest-900 font-display mt-1">{nextService.title}</div>
+              <div className="eyebrow">Next Service</div>
+              <div className="mt-4 display-md text-forest-900 group-hover:text-honey-700 transition-colors duration-500">{nextService.title}</div>
             </div>
-            <ArrowRight className="w-6 h-6 text-forest-600 group-hover:translate-x-2 transition-transform" />
-          </Link>
-        </div>
+            <span className="shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-full border border-forest-900/25 flex items-center justify-center group-hover:bg-forest-900 group-hover:text-cream-50 group-hover:border-forest-900 transition-all duration-500">
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+        </Link>
       </section>
 
       <CTASection />

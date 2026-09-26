@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { Clock, ArrowRight, ArrowLeft, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Clock, ArrowUpRight, ArrowLeft, X } from "lucide-react";
 import ScrollReveal from "../components/ScrollReveal";
 import CTASection from "../components/CTASection";
+import PageHero from "../components/PageHero";
+import FieldFilms from "../components/FieldFilms";
 import { knowledgeArticles } from "../data/knowledge";
 
 const categories = ["All", "Planting Guide", "Pest Management", "Orchard Care", "Varieties", "Soil & Nutrition"];
@@ -11,123 +13,140 @@ export default function KnowledgePage() {
   const [selected, setSelected] = useState<typeof knowledgeArticles[0] | null>(null);
 
   const filtered = filter === "All" ? knowledgeArticles : knowledgeArticles.filter((a) => a.category === filter);
+  const [lead, ...rest] = filtered;
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [selected]);
 
   return (
-    <div className="pt-20">
-      <section className="relative min-h-[50vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/7509487/pexels-photo-7509487.jpeg?auto=compress&cs=tinysrgb&w=1920"
-            alt="Farmer trimming tree branches in an orchard"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 to-charcoal-900/30" />
-        </div>
-        <div className="relative container-wide pb-16 pt-32">
-          <div className="max-w-2xl">
-            <span className="text-honey-200 text-sm font-600 tracking-wide uppercase">Knowledge Hub</span>
-            <h1 className="mt-4 text-4xl md:text-6xl font-600 text-cream-50 leading-tight font-display text-balance">
-              Guides for<br /><span className="italic font-400 text-honey-200">better orchards</span>
-            </h1>
-            <p className="mt-5 text-cream-100/80 text-lg max-w-xl">
-              Practical articles on planting, pruning, pest management, and
-              soil health — written by our team for Kashmir's growers.
-            </p>
+    <div>
+      <PageHero
+        image="/images/real/field-demonstration-1600.webp"
+        imagePosition="60% 8%"
+        alt="An Abraq specialist giving a field demonstration to growers"
+        eyebrow="Knowledge Hub"
+        title="Guides for"
+        accent="better orchards"
+        description="Practical articles on planting, pruning, pest management, and soil health — written by our team for Kashmir's growers."
+      />
+
+      <FieldFilms
+        layout="feature"
+        ids={["PZfOqeoDPZI"]}
+        eyebrow="Expert advisory · Video"
+        title="Protecting blossom"
+        accent="at pink stage"
+        ctaLabel="Watch the advisory"
+      />
+
+      <section className="py-20 md:py-28 bg-cream-50">
+        <div className="container-wide">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 md:flex-wrap mb-14">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                aria-pressed={filter === cat}
+                className={`chip shrink-0 ${filter === cat ? "chip-active" : ""}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Lead article */}
+          {lead && (
+            <ScrollReveal key={`lead-${filter}`}>
+              <button onClick={() => setSelected(lead)} className="group w-full text-left grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-16 mb-16 border-b border-cream-300">
+                <div className="lg:col-span-7 relative aspect-[16/10] rounded-[1.75rem] overflow-hidden img-zoom">
+                  <img src={lead.image} alt={lead.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <span className="absolute top-5 left-5 px-3.5 py-1.5 rounded-full glass-card text-cream-50 text-[10px] font-700 tracking-[0.2em] uppercase">
+                    Featured · {lead.category}
+                  </span>
+                </div>
+                <div className="lg:col-span-5">
+                  <ArticleMeta readTime={lead.readTime} date={lead.date} />
+                  <h3 className="mt-4 font-display text-4xl md:text-5xl text-forest-900 leading-[1.02] group-hover:text-honey-700 transition-colors duration-500">{lead.title}</h3>
+                  <p className="mt-5 text-charcoal-700/70 leading-relaxed line-clamp-4">{lead.excerpt}</p>
+                  <ReadMore />
+                </div>
+              </button>
+            </ScrollReveal>
+          )}
+
+          <div key={filter} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14 reveal-stagger">
+            {rest.map((article) => (
+              <button
+                key={article.id}
+                onClick={() => setSelected(article)}
+                className="group text-left"
+              >
+                <div className="relative aspect-[16/11] rounded-[1.25rem] overflow-hidden img-zoom">
+                  <img src={article.image} alt={article.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full glass-card text-cream-50 text-[10px] font-700 tracking-[0.18em] uppercase">
+                    {article.category}
+                  </span>
+                </div>
+                <div className="mt-5">
+                  <ArticleMeta readTime={article.readTime} date={article.date} />
+                  <h3 className="mt-3 font-display text-2xl md:text-[1.75rem] text-forest-900 leading-tight group-hover:text-honey-700 transition-colors duration-500">{article.title}</h3>
+                  <p className="mt-3 text-sm text-charcoal-700/70 leading-relaxed line-clamp-3">{article.excerpt}</p>
+                  <ReadMore />
+                </div>
+              </button>
+            ))}
           </div>
         </div>
-      </section>
-
-      <section className="py-16 md:py-24 bg-cream-50">
-        <ScrollReveal>
-          <div className="container-wide">
-            <div className="flex flex-wrap gap-2 mb-10">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-500 transition-all duration-300 ${
-                    filter === cat ? "bg-forest-600 text-cream-50" : "bg-cream-100 text-charcoal-700 hover:bg-cream-200"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((article) => (
-                <button
-                  key={article.id}
-                  onClick={() => setSelected(article)}
-                  className="group text-left bg-cream-50 rounded-3xl overflow-hidden border border-cream-200 hover:border-forest-200 hover:shadow-xl transition-all duration-400"
-                >
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <span className="absolute top-3 left-3 px-3 py-1 bg-forest-600/90 backdrop-blur-sm text-cream-50 rounded-full text-xs font-600">
-                      {article.category}
-                    </span>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 text-xs text-charcoal-700/50 mb-3">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        {article.readTime}
-                      </span>
-                      <span>·</span>
-                      <span>{article.date}</span>
-                    </div>
-                    <h3 className="text-lg font-600 text-forest-900 font-display leading-tight mb-2">{article.title}</h3>
-                    <p className="text-sm text-charcoal-700/70 leading-relaxed line-clamp-3">{article.excerpt}</p>
-                    <div className="mt-4 flex items-center gap-1.5 text-forest-600 font-600 text-sm group-hover:text-forest-800 transition-colors">
-                      Read more
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
       </section>
 
       {selected && (
         <div
-          className="fixed inset-0 z-[60] bg-charcoal-900/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fade-in"
+          className="fixed inset-0 z-[60] bg-forest-950/85 backdrop-blur-md flex items-end md:items-center justify-center md:p-6 animate-fade-in"
           onClick={() => setSelected(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={selected.title}
         >
-          <div
-            className="bg-cream-50 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in"
+          <article
+            className="bg-cream-50 rounded-t-[1.75rem] md:rounded-[1.75rem] max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl animate-fade-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-[16/9] overflow-hidden rounded-t-3xl">
+            <div className="relative aspect-[16/8] overflow-hidden">
               <img src={selected.image} alt={selected.title} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-cream-50 via-transparent to-transparent" />
               <button
                 onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 bg-cream-50/90 backdrop-blur-sm p-2 rounded-full text-charcoal-700 hover:bg-cream-50 transition-colors"
+                className="absolute top-4 right-4 w-11 h-11 bg-cream-50/90 backdrop-blur-sm rounded-full text-forest-900 flex items-center justify-center hover:bg-forest-900 hover:text-cream-50 transition-all duration-500"
+                aria-label="Close article"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-6 md:p-8">
-              <div className="flex items-center gap-3 text-sm text-charcoal-700/50 mb-4">
-                <span className="px-3 py-1 bg-forest-100 text-forest-700 rounded-full text-xs font-600">{selected.category}</span>
-                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {selected.readTime}</span>
-                <span>· {selected.date}</span>
+            <div className="px-7 md:px-14 pb-12 -mt-6 relative">
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="eyebrow">{selected.category}</span>
+                <ArticleMeta readTime={selected.readTime} date={selected.date} />
               </div>
-              <h2 className="text-2xl md:text-3xl font-600 text-forest-900 font-display mb-4">{selected.title}</h2>
-              <p className="text-charcoal-700/80 leading-relaxed text-lg">{selected.content}</p>
+              <h2 className="mt-5 font-display text-4xl md:text-5xl text-forest-900 leading-[1.05]">{selected.title}</h2>
+              <p className="mt-8 text-charcoal-700/85 leading-[1.85] text-lg first-letter:float-left first-letter:font-display first-letter:text-7xl first-letter:leading-[0.8] first-letter:mr-3 first-letter:mt-1 first-letter:text-honey-600">
+                {selected.content}
+              </p>
               <button
                 onClick={() => setSelected(null)}
-                className="mt-8 inline-flex items-center gap-2 text-forest-600 font-600 hover:text-forest-800 transition-colors text-sm"
+                className="mt-10 btn-lux btn-ghost-dark"
               >
                 <ArrowLeft className="w-4 h-4" /> Back to articles
               </button>
             </div>
-          </div>
+          </article>
         </div>
       )}
 
@@ -137,5 +156,26 @@ export default function KnowledgePage() {
         buttonText="Ask Our Experts"
       />
     </div>
+  );
+}
+
+function ArticleMeta({ readTime, date }: { readTime: string; date: string }) {
+  return (
+    <div className="flex items-center gap-3 text-xs text-charcoal-700/70">
+      <span className="flex items-center gap-1.5">
+        <Clock className="w-3.5 h-3.5 text-honey-600" />
+        {readTime}
+      </span>
+      <span className="w-1 h-1 rounded-full bg-cream-300" />
+      <span>{date}</span>
+    </div>
+  );
+}
+
+function ReadMore() {
+  return (
+    <span className="mt-5 inline-flex items-center gap-2 link-underline text-sm font-700 text-forest-900">
+      Read more <ArrowUpRight className="w-4 h-4" />
+    </span>
   );
 }

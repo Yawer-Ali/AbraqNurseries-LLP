@@ -16,6 +16,7 @@ export function FloatingParticles({ count = 30 }: { count?: number }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -39,9 +40,9 @@ export function FloatingParticles({ count = 30 }: { count?: number }) {
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * 0.3,
           vy: -Math.random() * 0.4 - 0.1,
-          size: Math.random() * 3 + 1,
-          opacity: Math.random() * 0.4 + 0.1,
-          hue: Math.random() * 40 + 30,
+          size: Math.random() * 2.2 + 0.8,
+          opacity: Math.random() * 0.35 + 0.1,
+          hue: Math.random() * 12 + 38,
         });
       }
     };
@@ -62,8 +63,8 @@ export function FloatingParticles({ count = 30 }: { count?: number }) {
         if (p.x > canvas.width + 10) p.x = -10;
 
         const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
-        gradient.addColorStop(0, `hsla(${p.hue}, 70%, 60%, ${p.opacity})`);
-        gradient.addColorStop(1, `hsla(${p.hue}, 70%, 60%, 0)`);
+        gradient.addColorStop(0, `hsla(${p.hue}, 55%, 75%, ${p.opacity})`);
+        gradient.addColorStop(1, `hsla(${p.hue}, 55%, 75%, 0)`);
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);

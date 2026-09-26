@@ -1,65 +1,82 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowUpRight, MapPin } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import TiltCard from "./TiltCard";
+import SectionHeading from "./SectionHeading";
 import { projects } from "../data/projects";
 
 export function ModernCaseStudies() {
   const featured = projects.slice(0, 3);
+  const [lead, ...rest] = featured;
 
   return (
-    <section className="py-24 md:py-32 bg-cream-50 relative overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-honey-50 opacity-40 blur-3xl" />
-
-      <ScrollReveal>
-        <div className="container-wide relative">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <div className="max-w-2xl">
-              <span className="text-forest-600 text-sm font-600 tracking-wide uppercase">Our Work</span>
-              <h2 className="mt-4 text-4xl md:text-5xl font-600 text-forest-900 leading-tight text-balance font-display">
-                Projects across<br /><span className="italic font-400 text-gradient-green">Kashmir's districts</span>
-              </h2>
-            </div>
-            <Link
-              to="/projects"
-              className="group inline-flex items-center gap-2 text-forest-600 font-600 hover:text-forest-800 transition-colors"
-            >
-              All projects
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+    <section className="py-24 md:py-36 bg-cream-50 relative overflow-hidden">
+      <div className="container-wide relative">
+        <SectionHeading
+          index="03"
+          accentStyle="underline"
+          eyebrow="Our Work"
+          title="Projects across"
+          accent="Kashmir's districts"
+          aside={
+            <Link to="/projects" className="btn-lux btn-ghost-dark">
+              All projects <ArrowUpRight className="w-4 h-4" />
             </Link>
-          </div>
+          }
+        />
 
-          <div className="grid md:grid-cols-3 gap-6 reveal-stagger">
-            {featured.map((p) => (
-              <Link key={p.id} to="/projects" className="block">
-                <TiltCard maxTilt={6} scale={1.02}>
-                  <div className="group rounded-3xl overflow-hidden bg-cream-100 border border-cream-200 hover:shadow-xl transition-all duration-400">
-                    <div className="relative aspect-video overflow-hidden">
-                      <img
-                        src={p.image}
-                        alt={p.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/40 to-transparent" />
-                      <span className="absolute top-3 left-3 px-3 py-1 bg-forest-600/90 backdrop-blur-sm text-cream-50 rounded-full text-xs font-600">
-                        {p.category}
-                      </span>
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-8">
+          {/* Lead story */}
+          {lead && (
+            <ScrollReveal variant="mask" className="lg:col-span-7">
+              <Link to="/projects" className="group block">
+                <div className="relative aspect-[4/3] lg:aspect-[5/4] rounded-[1.75rem] overflow-hidden img-zoom">
+                  <img src={lead.image} alt={lead.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-forest-950/45 to-forest-950/5" />
+                  <span className="absolute top-5 left-5 px-3.5 py-1.5 rounded-full glass-card text-cream-50 text-[10px] font-700 tracking-[0.2em] uppercase">
+                    {lead.category}
+                  </span>
+                  <div className="absolute left-6 right-6 bottom-6 md:left-10 md:right-10 md:bottom-10 text-cream-50">
+                    <div className="flex items-center gap-2 text-cream-100/70 text-xs tracking-wide">
+                      <MapPin className="w-3.5 h-3.5 text-honey-300" />
+                      {lead.location} · {lead.area} · {lead.year}
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-1.5 text-charcoal-700/50 text-xs mb-2">
-                        <MapPin className="w-3.5 h-3.5" />
-                        {p.location} · {p.area} · {p.year}
-                      </div>
-                      <h3 className="text-lg font-600 text-forest-900 font-display mb-2">{p.title}</h3>
-                      <p className="text-sm text-charcoal-700/70 leading-relaxed line-clamp-3">{p.description}</p>
-                    </div>
+                    <h3 className="mt-3 font-display text-3xl md:text-5xl font-500 leading-[1.05] max-w-xl">{lead.title}</h3>
+                    <p className="mt-4 text-sm text-cream-100/75 leading-relaxed line-clamp-3 max-w-xl hidden sm:block">{lead.description}</p>
                   </div>
-                </TiltCard>
+                </div>
               </Link>
+            </ScrollReveal>
+          )}
+
+          {/* Supporting stories */}
+          <div className="lg:col-span-5 flex flex-col gap-10 lg:gap-8">
+            {rest.map((p, i) => (
+              <ScrollReveal key={p.id} delay={150 + i * 120}>
+                <Link to="/projects" className="group grid grid-cols-[42%_1fr] sm:grid-cols-[45%_1fr] gap-5 md:gap-6 items-start">
+                  <div className="relative aspect-[4/5] rounded-[1.25rem] overflow-hidden img-zoom">
+                    <img src={p.image} alt={p.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="pt-1">
+                    <span className="numeral italic text-sm text-honey-700">0{i + 2}</span>
+                    <span className="block mt-3 text-[10px] font-700 tracking-[0.2em] uppercase text-forest-600">{p.category}</span>
+                    <h3 className="mt-2 font-display text-2xl md:text-[1.75rem] font-500 text-forest-900 leading-tight group-hover:text-honey-700 transition-colors duration-500">
+                      {p.title}
+                    </h3>
+                    <div className="mt-3 flex items-center gap-1.5 text-charcoal-700/70 text-xs">
+                      <MapPin className="w-3.5 h-3.5 shrink-0" />
+                      <span>{p.location} · {p.area} · {p.year}</span>
+                    </div>
+                    <p className="mt-3 text-sm text-charcoal-700/70 leading-relaxed line-clamp-3 hidden md:block">{p.description}</p>
+                    <span className="mt-4 inline-flex link-underline text-xs font-700 tracking-wide text-forest-800">
+                      Read case <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              </ScrollReveal>
             ))}
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

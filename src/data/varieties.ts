@@ -6,6 +6,7 @@ export interface Variety {
   season: string;
   origin: string;
   description: string;
+  /** Real photograph; empty string renders a botanical illustration instead */
   image: string;
   flavorProfile: string;
   yieldTime: string;
@@ -26,7 +27,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "The crown jewel of Kashmiri apples — a late-harvest variety with crisp, aromatic flesh and a distinctive blush-red skin. Ambri commands premium prices and is prized for its exceptional keeping quality.",
-    image: "https://images.pexels.com/photos/18607500/pexels-photo-18607500.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/apples-pair-closeup-1600.webp",
     flavorProfile: "Sweet · Aromatic · Crisp",
     yieldTime: "5–6 years after planting",
     climate: "Temperate / Highland",
@@ -44,7 +45,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "A medium-to-large apple with a pale yellow skin and red stripes. Known for its juicy, sub-acid flavor and excellent cooking properties. A reliable bearer suited to mid-altitude orchards.",
-    image: "https://images.pexels.com/photos/28387808/pexels-photo-28387808.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "/images/real/apple-cluster-branch-1600.webp",
     flavorProfile: "Juicy · Sub-acid · Versatile",
     yieldTime: "4–5 years after planting",
     climate: "Temperate / Highland",
@@ -62,7 +63,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "Deep red, heart-shaped cherries with firm, sweet flesh. Kashmir's short cherry season produces some of India's finest fruit, grown at 1,500–2,500m elevation for optimal color and sugar development.",
-    image: "https://images.pexels.com/photos/33328094/pexels-photo-33328094.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Sweet · Firm · Rich",
     yieldTime: "3–4 years after planting",
     climate: "Cool temperate",
@@ -80,7 +81,7 @@ export const varieties: Variety[] = [
     origin: "North India",
     description:
       "A soft, juicy pear with greenish-yellow skin and a buttery texture. Babugosha is the most popular pear variety in Kashmir, loved for its melting flesh and mild sweet flavor.",
-    image: "https://images.pexels.com/photos/11477745/pexels-photo-11477745.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Buttery · Mild · Juicy",
     yieldTime: "4–5 years after planting",
     climate: "Temperate",
@@ -98,7 +99,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "Small to medium plums with deep purple skin and golden-yellow flesh. Tart-sweet with a satisfying bite, excellent for fresh eating, preserves, and drying.",
-    image: "https://images.pexels.com/photos/12903663/pexels-photo-12903663.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Tart-sweet · Firm · Versatile",
     yieldTime: "3–4 years after planting",
     climate: "Cool temperate",
@@ -116,7 +117,7 @@ export const varieties: Variety[] = [
     origin: "Ladakh & Kashmir",
     description:
       "Golden-orange apricots with a velvety skin and rich, sweet-tart flavor. Grown in the high-altitude regions of Ladakh and Kashmir, these apricots are sun-dried for premium export markets.",
-    image: "https://images.pexels.com/photos/28939324/pexels-photo-28939324.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Sweet-tart · Velvety · Rich",
     yieldTime: "3–5 years after planting",
     climate: "Cold dry / Highland",
@@ -134,7 +135,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "Large pomegranates with ruby-red arils and a sweet-tart juice. Rich in antioxidants and prized for both fresh consumption and juice extraction. A growing segment in Kashmir's horticulture.",
-    image: "https://images.pexels.com/photos/28678617/pexels-photo-28678617.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Sweet-tart · Juicy · Antioxidant-rich",
     yieldTime: "3–4 years after planting",
     climate: "Semi-arid / Temperate",
@@ -152,7 +153,7 @@ export const varieties: Variety[] = [
     origin: "Kashmir Valley",
     description:
       "Kashmir's almond blossoms herald spring across the valley. The nuts are sweet, rich in oil, and harvested from hard-shelled varieties adapted to the region's cold winters and dry summers.",
-    image: "https://images.pexels.com/photos/15908026/pexels-photo-15908026.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    image: "",
     flavorProfile: "Nutty · Sweet · Oil-rich",
     yieldTime: "4–5 years after planting",
     climate: "Cold temperate",

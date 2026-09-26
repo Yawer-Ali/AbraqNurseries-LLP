@@ -1,124 +1,117 @@
-import { Play, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import SectionHeading from "./SectionHeading";
 import ScrollReveal from "./ScrollReveal";
+import ShortCard from "./youtube/ShortCard";
+import YouTubeMark from "./youtube/YouTubeMark";
+import { useShortPlayer } from "./youtube/ShortPlayer";
+import { YOUTUBE_CHANNEL_URL, type VideoCategory, videosIn } from "../data/youtube";
 
-const videos = [
-  {
-    id: "v1",
-    title: "Orchard Development: Drone Aerial Survey & High-Density Spindle",
-    duration: "4:32",
-    videoSrc: "/videos/kashmir-orchard-drone-hero.mp4",
-    thumbnail: "/images/hero/kashmir-orchard-aerial-1.webp",
-    description: "Aerial flyover of certified high-density apple orchards across Kashmir featuring Italian M9 spindle canopy architecture.",
-  },
-  {
-    id: "v2",
-    title: "Knip-Boom Nursery Propagation & Rootstock Layering",
-    duration: "3:15",
-    videoSrc: "/videos/nursery-propagation-live.mp4",
-    thumbnail: "/images/nursery/dsc03616.webp",
-    description: "Certified European clonal rootstock mother beds, precision omega bench-grafting, and feathered sapling development.",
-  },
-  {
-    id: "v3",
-    title: "Snow-Load Trellis Architecture & Micro-Drip Setup",
-    duration: "5:48",
-    videoSrc: "/videos/trellis-setup-live.mp4",
-    thumbnail: "/images/trellis/dsc08864.webp",
-    description: "Heavy snow-load concrete & galvanized steel trellis installation with automated rootzone fertigation lines.",
-  },
-  {
-    id: "v4",
-    title: "Commercial Harvest & Color Grading Packout",
-    duration: "3:40",
-    videoSrc: "/videos/harvest-packout-live.mp4",
-    thumbnail: "/images/harvest/dsc07844.webp",
-    description: "90%+ export-grade Mandi packout of Gala Schniga, King Roat, and Red Velox apple cultivars.",
-  },
+// The orchard's life, in the order it happens in the field
+const stages: { category: VideoCategory; label: string; blurb: string }[] = [
+  { category: "Layout & Infrastructure", label: "Layout", blurb: "Lines, poles and trellis before a single tree goes in." },
+  { category: "Plantation", label: "Plantation", blurb: "Feathered saplings set along the drip line." },
+  { category: "Bloom & Growth", label: "Bloom", blurb: "First sprouts, spring blossom and fruit set." },
+  { category: "Harvest", label: "Harvest", blurb: "Laden rows, colour on the branch and picking day." },
 ];
 
+const journey = stages.flatMap((s) => videosIn(s.category));
+
 export function VideoSection() {
-  const [activeVideo, setActiveVideo] = useState<typeof videos[0] | null>(null);
+  const { open, player } = useShortPlayer(journey);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      setProgress(max > 0 ? el.scrollLeft / max : 0);
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollBy = (dir: number) => {
+    const el = trackRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  };
+
+  let running = 0;
 
   return (
-    <section className="py-24 md:py-32 bg-charcoal-900 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: "radial-gradient(circle at 50% 50%, rgba(232,150,31,0.3) 0%, transparent 60%)",
-      }} />
-      <ScrollReveal>
-        <div className="container-wide relative">
-          <div className="max-w-2xl mb-12">
-            <span className="text-honey-300 text-sm font-600 tracking-wide uppercase">Watch & Learn</span>
-            <h2 className="mt-4 text-3xl md:text-5xl font-600 text-cream-50 leading-tight font-display">
-              Our process<br /><span className="italic font-400 text-gradient-gold">in motion</span>
-            </h2>
-            <p className="mt-4 text-cream-200/60 text-lg leading-relaxed">
-              Watch real footage of how we develop high-density orchards, graft certified saplings, and install trellis frameworks across Kashmir.
-            </p>
-          </div>
+    <section className="py-24 md:py-36 bg-forest-950 text-cream-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_80%_10%,rgba(201,168,106,0.12),transparent)]" />
+      <div className="container-wide relative">
+        <SectionHeading
+          index="08"
+          variant="watermark"
+          watermark="Season"
+          tone="dark"
+          eyebrow="Watch & Learn"
+          title="Our process"
+          accent="in motion"
+          description="Real footage from our orchards across Kashmir — from marking the first line to picking the first crate. Follow the season, stage by stage."
+          aside={
+            <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="btn-lux btn-ghost-light">
+              <YouTubeMark className="w-4 h-4" /> Our YouTube channel <ArrowUpRight className="w-4 h-4" />
+            </a>
+          }
+        />
+      </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {videos.map((video) => (
-              <button
-                key={video.id}
-                onClick={() => setActiveVideo(video)}
-                className="group text-left cursor-pointer"
-              >
-                <div className="relative aspect-video rounded-2xl overflow-hidden border border-cream-100/10 hover:border-honey-300/30 transition-colors duration-300">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-charcoal-900/40 group-hover:bg-charcoal-900/20 transition-colors" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex items-center justify-center w-14 h-14 rounded-full bg-cream-50/90 backdrop-blur-sm text-forest-700 group-hover:bg-honey-400 group-hover:scale-110 transition-all duration-300 shadow-xl">
-                      <Play className="w-6 h-6 ml-1" fill="currentColor" />
-                    </span>
-                  </div>
-                  <span className="absolute bottom-3 right-3 px-2 py-1 bg-charcoal-900/80 text-cream-50 rounded text-xs font-500">
-                    {video.duration}
+      {/* Film strip — bleeds to the right edge */}
+      <ScrollReveal variant="fade">
+        <div
+          ref={trackRef}
+          className="relative flex gap-4 md:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-4 pl-5 sm:pl-8 lg:pl-[max(3rem,calc((100vw_-_1320px)/2_+_3rem))] pr-5 scroll-pl-5 sm:scroll-pl-8 lg:scroll-pl-[max(3rem,calc((100vw_-_1320px)/2_+_3rem))]"
+          role="region"
+          aria-label="Orchard journey videos"
+        >
+          {stages.map((stage, si) => {
+            const vids = videosIn(stage.category);
+            const start = running;
+            running += vids.length;
+            return (
+              <div key={stage.category} className="flex gap-4 md:gap-5 shrink-0">
+                {/* Stage marker */}
+                <div className="snap-start shrink-0 w-44 md:w-56 flex flex-col justify-end pb-2 pr-2 border-l border-honey-400/25 pl-5">
+                  <span className="numeral italic text-5xl md:text-6xl text-honey-300/80 leading-none">0{si + 1}</span>
+                  <span className="mt-4 font-display text-3xl md:text-4xl">{stage.label}</span>
+                  <p className="mt-3 text-sm text-cream-200/55 leading-relaxed">{stage.blurb}</p>
+                  <span className="mt-5 text-[10px] tracking-[0.25em] uppercase text-honey-300/80">
+                    {vids.length} {vids.length === 1 ? "film" : "films"}
                   </span>
                 </div>
-                <h3 className="mt-4 text-cream-50 font-600 font-display text-base group-hover:text-honey-200 transition-colors line-clamp-2">
-                  {video.title}
-                </h3>
-                <p className="mt-1.5 text-cream-200/50 text-xs leading-relaxed line-clamp-2">{video.description}</p>
-              </button>
-            ))}
-          </div>
+                {vids.map((v, vi) => (
+                  <div key={v.id} className="snap-start shrink-0 w-[62vw] sm:w-60 md:w-64">
+                    <ShortCard video={v} index={start + vi} onPlay={() => open(start + vi)} showCaption />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+          <div className="shrink-0 w-4" aria-hidden="true" />
         </div>
       </ScrollReveal>
 
-      {activeVideo && (
-        <div
-          className="fixed inset-0 z-[70] bg-charcoal-900/90 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in"
-          onClick={() => setActiveVideo(null)}
-        >
-          <div className="max-w-4xl w-full bg-charcoal-900/95 p-4 sm:p-6 rounded-3xl border border-cream-100/15 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <span className="text-xs font-bold text-honey-300 uppercase tracking-wider">Now Playing</span>
-                <h3 className="text-cream-50 text-lg sm:text-xl font-600 font-display">{activeVideo.title}</h3>
-              </div>
-              <button onClick={() => setActiveVideo(null)} className="text-cream-200/60 hover:text-cream-50 transition-colors p-2 cursor-pointer">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-black flex items-center justify-center border border-cream-100/10">
-              <video
-                src={activeVideo.videoSrc}
-                poster={activeVideo.thumbnail}
-                controls
-                autoPlay
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <p className="text-xs sm:text-sm text-cream-200/70 mt-3">{activeVideo.description}</p>
-          </div>
+      <div className="container-wide relative mt-8 flex items-center gap-6">
+        <div className="flex-1 h-px bg-cream-50/10 relative overflow-hidden">
+          <span className="absolute inset-y-0 left-0 bg-honey-400 transition-[width] duration-300" style={{ width: `${Math.max(8, progress * 100)}%` }} />
         </div>
-      )}
+        <div className="flex gap-2">
+          <button onClick={() => scrollBy(-1)} className="w-12 h-12 rounded-full border border-cream-50/20 flex items-center justify-center hover:bg-cream-50 hover:text-forest-950 transition-all duration-500" aria-label="Scroll back">
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <button onClick={() => scrollBy(1)} className="w-12 h-12 rounded-full border border-cream-50/20 flex items-center justify-center hover:bg-cream-50 hover:text-forest-950 transition-all duration-500" aria-label="Scroll forward">
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {player}
     </section>
   );
 }

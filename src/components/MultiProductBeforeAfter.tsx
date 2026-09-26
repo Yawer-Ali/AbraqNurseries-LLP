@@ -1,7 +1,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
-  Sparkles, 
   MoveHorizontal, 
   Check, 
   X, 
@@ -14,6 +13,8 @@ import {
   Pause,
   TrendingUp
 } from "lucide-react";
+import SectionHeading from "./SectionHeading";
+import ScrollReveal from "./ScrollReveal";
 
 interface TransformationScenario {
   id: string;
@@ -46,7 +47,7 @@ export const MultiProductBeforeAfter: React.FC = () => {
       icon: Trees,
       title: "Traditional Seedling vs. M9 High-Density Trellis",
       subtitle: "Experience the monumental shift from low-density 25-tree spacing to 330 certified knip trees per kanal.",
-      beforeImage: "/images/hero/kashmir-orchard-aerial-4.webp",
+      beforeImage: "/images/real/traditional-orchard-1600.webp",
       afterImage: "/images/hero/kashmir-orchard-aerial-1.webp",
       beforeTitle: "Traditional Seedling Orchard",
       afterTitle: "Abraq M9 High-Density Trellis",
@@ -76,7 +77,7 @@ export const MultiProductBeforeAfter: React.FC = () => {
       title: "Flood Irrigation vs. Automated Root Drip",
       subtitle: "Eliminate water stress and nutrient leaching with targeted rootzone fertigation.",
       beforeImage: "/images/hero/kashmir-orchard-aerial-3.webp",
-      afterImage: "/images/trellis/dsc08911.webp",
+      afterImage: "/images/real/soil-probe-drip-1600.webp",
       beforeTitle: "Conventional Flood Irrigation",
       afterTitle: "Automated Micro-Drip Fertigation",
       metrics: [
@@ -104,9 +105,9 @@ export const MultiProductBeforeAfter: React.FC = () => {
       icon: Award,
       title: "Traditional Blemished Crop vs. Export Grade-A Packout",
       subtitle: "How high-density Italian clones command top-tier rates in Azadpur Mandi Delhi & Mumbai wholesale.",
-      beforeImage: "/images/varieties/ziola.webp",
-      afterImage: "/images/harvest/dsc07836.webp",
-      beforeTitle: "Traditional Harvest Packout",
+      beforeImage: "/images/real/traditional-orchard-1600.webp",
+      afterImage: "/images/real/harvest-crates-1600.webp",
+      beforeTitle: "Traditional Orchard Harvest",
       afterTitle: "Abraq Gala & King Roat® Grade-A",
       metrics: [
         { label: "Grade-A Percentage", beforeVal: "35% - 45% Packout", afterVal: "90% - 95% Packout", improvement: "+50% Grade-A", progressPercentage: 92 },
@@ -133,9 +134,9 @@ export const MultiProductBeforeAfter: React.FC = () => {
       icon: ShieldCheck,
       title: "Unprotected Hail Devastation vs. Retractable UV Canopy",
       subtitle: "Safeguard your entire season's earnings against unpredictable summer hailstorms in Kashmir.",
-      beforeImage: "/images/trellis/dsc08866.webp",
-      afterImage: "/images/trellis/dsc08851.webp",
-      beforeTitle: "Unprotected Hail Damaged Crop",
+      beforeImage: "/images/real/young-orchard-block-1600.webp",
+      afterImage: "/images/real/net-canopy-bloom-1600.webp",
+      beforeTitle: "Open, Unprotected Orchard",
       afterTitle: "Abraq Anti-Hail Retractable Canopy",
       metrics: [
         { label: "Crop Protection", beforeVal: "0% (100% Loss Risk)", afterVal: "100% Shielded", improvement: "Zero Hail Loss", progressPercentage: 100 },
@@ -162,10 +163,10 @@ export const MultiProductBeforeAfter: React.FC = () => {
       icon: FlaskConical,
       title: "Nutrient-Locked Soil vs. Chadoora Laboratory Balance",
       subtitle: "Atomic absorption spectrometer testing to eliminate chlorosis and optimize root vitality.",
-      beforeImage: "/images/nursery/dsc03671.webp",
-      afterImage: "/images/nursery/dsc03589.webp",
-      beforeTitle: "Nutrient Locked / Chlorotic Soil",
-      afterTitle: "Chadoora Lab Balanced Rootzone",
+      beforeImage: "/images/real/raw-land-before-1600.webp",
+      afterImage: "/images/real/adding-manure-1600.webp",
+      beforeTitle: "Untested, Unprepared Soil",
+      afterTitle: "Lab-Guided Soil Preparation",
       metrics: [
         { label: "Plant Survival Rate", beforeVal: "70% - 80% Survival", afterVal: "98%+ Guaranteed", improvement: "+25% Survival", progressPercentage: 98 },
         { label: "Fertilizer Overdose", beforeVal: "₹8,000/kanal wasted", afterVal: "Precision Dosage", improvement: "Zero Guesswork", progressPercentage: 88 },
@@ -246,275 +247,221 @@ export const MultiProductBeforeAfter: React.FC = () => {
   };
 
   return (
-    <section id="transformation" className="ds-section py-24 bg-background relative overflow-hidden border-y border-border">
-      {/* Background ambient lighting */}
-      <div className="pointer-events-none absolute top-1/4 -left-20 w-[600px] h-[600px] bg-accent/80 dark:bg-primary/5 rounded-full blur-[160px] -z-10 animate-float" />
-      <div className="pointer-events-none absolute bottom-10 -right-20 w-[550px] h-[550px] bg-amber-500/10 dark:bg-[#d4af37]/5 rounded-full blur-[150px] -z-10 animate-float-reverse" />
-
+    <section id="transformation" className="ds-section py-24 md:py-36 bg-cream-50 overflow-hidden">
       <div className="ds-container">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-4 shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span>Interactive Transformation Engine</span>
-          </div>
-          
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight mb-4">
-            Before & After: The <span className="font-serif italic font-normal text-primary">High-Density Proof</span>
-          </h2>
-          
-          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-medium">
-            Explore side-by-side interactive visual proof across every dimension of your orchard — from density and irrigation to Mandi grading and hail protection.
-          </p>
+        <SectionHeading
+          index="07"
+          variant="center"
+          accentStyle="plain"
+          eyebrow="Interactive Transformation Engine"
+          title="Before & After: The"
+          accent="High-Density Proof"
+          description="Explore side-by-side interactive visual proof across every dimension of your orchard — from density and irrigation to Mandi grading and hail protection."
+        />
 
-          {/* 5 Transformation Category Switcher Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-8">
-            {scenarios.map((sc, idx) => {
-              const Icon = sc.icon;
-              const isSelected = activeTab === idx;
-              return (
-                <button
-                  key={sc.id}
-                  onClick={() => handleTabChange(idx)}
-                  className={`px-5 py-2.5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
-                    isSelected
-                      ? "bg-primary text-white shadow-lg shadow-alpine-950/20 scale-105"
-                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-secondary"
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-white" : "text-primary"}`} />
-                  <span>{sc.tabLabel}</span>
-                </button>
-              );
-            })}
+        {/* Category tabs */}
+        <ScrollReveal>
+          <div className="-mx-5 px-5 overflow-x-auto no-scrollbar mb-10 md:mb-14">
+            <div role="tablist" className="flex md:justify-center gap-1 min-w-max border-b border-border">
+              {scenarios.map((sc, idx) => {
+                const Icon = sc.icon;
+                const isSelected = activeTab === idx;
+                return (
+                  <button
+                    key={sc.id}
+                    role="tab"
+                    aria-selected={isSelected}
+                    onClick={() => handleTabChange(idx)}
+                    className={`relative px-4 md:px-5 py-4 text-xs md:text-[13px] font-700 tracking-wide transition-colors duration-300 flex items-center gap-2 ${
+                      isSelected ? "text-forest-900" : "text-muted-foreground hover:text-forest-900"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isSelected ? "text-honey-600" : ""}`} strokeWidth={1.7} />
+                    <span>{sc.tabLabel}</span>
+                    <span
+                      className={`absolute left-0 right-0 -bottom-px h-[2px] bg-honey-500 origin-left transition-transform duration-500 ${
+                        isSelected ? "scale-x-100" : "scale-x-0"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
 
-        {/* Selected Transformation Card Showcase */}
-        <div className="rounded-3xl border border-border bg-card dark:bg-card/75 p-6 sm:p-10 shadow-card dark:shadow-card-dark">
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-primary block mb-1">
-              {current.category}
-            </span>
-            <h3 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
+        <div key={current.id} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 animate-fade-up">
+          {/* Narrative + ledger */}
+          <div className="lg:col-span-4 flex flex-col">
+            <span className="eyebrow">{current.category}</span>
+            <h3 className="mt-5 font-display text-3xl sm:text-4xl font-500 text-forest-900 leading-[1.05]">
               {current.title}
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-relaxed font-medium">
-              {current.subtitle}
-            </p>
-          </div>
+            <p className="mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">{current.subtitle}</p>
 
-          {/* Metrics Improvement Banner */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-8">
-            {current.metrics.map((m, idx) => (
-              <div
-                key={idx}
-                className="p-5 rounded-2xl bg-secondary/80 dark:bg-secondary/80 border border-border flex flex-col justify-between"
-              >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">{m.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      Before: <strong className="line-through text-red-500/90 font-medium">{m.beforeVal}</strong>
-                    </p>
-                    <p className="text-xs font-bold text-foreground">
-                      After: <span className="text-primary font-bold">{m.afterVal}</span>
-                    </p>
+            <div className="mt-8 divide-y divide-border border-y border-border">
+              {current.metrics.map((m, idx) => (
+                <div key={idx} className="py-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[10px] font-700 text-muted-foreground uppercase tracking-[0.22em]">{m.label}</p>
+                    <span className="flex items-center gap-1 text-[11px] font-700 text-honey-700 text-right">
+                      <TrendingUp className="w-3 h-3 shrink-0" />
+                      {m.improvement}
+                    </span>
                   </div>
-                  <div className="px-3 py-1 rounded-full bg-accent border border-primary/20 text-primary text-[11px] font-bold shrink-0 flex items-center gap-1">
-                    <TrendingUp className="w-3 h-3 text-primary" />
-                    {m.improvement}
+                  <div className="mt-2 flex items-baseline justify-between gap-3">
+                    <span className="numeral text-2xl text-forest-900">{m.afterVal}</span>
+                    <span className="text-xs text-apple-600 line-through text-right">{m.beforeVal}</span>
+                  </div>
+                  <div className="mt-3 w-full bg-cream-200 h-[3px] rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-forest-700 via-forest-500 to-honey-400 transition-all duration-1000"
+                      style={{ width: `${m.progressPercentage}%` }}
+                    />
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
 
-                {/* Progress bar */}
-                <div className="w-full bg-muted rounded-full h-2 overflow-hidden mt-1">
-                  <div 
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400 transition-all duration-1000"
-                    style={{ width: `${m.progressPercentage}%` }}
-                  />
+          {/* Slider + point lists */}
+          <div className="lg:col-span-8">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-1 p-1 rounded-full border border-border bg-card">
+                <span className="text-[10px] font-700 tracking-[0.2em] uppercase text-muted-foreground px-3 hidden sm:inline">Presets</span>
+                {[
+                  { label: "100% Before", pos: 100, active: sliderPosition > 80 },
+                  { label: "50 / 50 Split", pos: 50, active: sliderPosition >= 40 && sliderPosition <= 60 },
+                  { label: "100% After", pos: 0, active: sliderPosition < 20 },
+                ].map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => { setIsAutoScanning(false); setSliderPosition(p.pos); }}
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-700 transition-all duration-300 ${
+                      p.active ? "bg-forest-900 text-cream-50" : "text-muted-foreground hover:text-forest-900"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setIsAutoScanning(!isAutoScanning)}
+                className={`px-4 py-2 rounded-full text-[11px] font-700 flex items-center gap-2 transition-all duration-300 border ${
+                  isAutoScanning
+                    ? "bg-honey-400 border-honey-400 text-forest-950"
+                    : "border-border text-forest-900 hover:border-forest-900"
+                }`}
+              >
+                {isAutoScanning ? (
+                  <>
+                    <Pause className="w-3 h-3 fill-current" />
+                    <span>Pause Scan</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-3 h-3 fill-current" />
+                    <span>Auto-Scan</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Slider viewport */}
+            <div
+              ref={containerRef}
+              onMouseDown={() => { setIsAutoScanning(false); setIsDragging(true); }}
+              onMouseMove={handleMouseMove}
+              onTouchMove={handleTouchMove}
+              className="relative aspect-4/3 sm:aspect-16/10 rounded-[1.5rem] overflow-hidden shadow-luxe select-none cursor-ew-resize group touch-pan-y"
+            >
+              <img
+                src={current.afterImage}
+                alt={current.afterTitle}
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable={false}
+              />
+              <div className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-full bg-forest-950/70 backdrop-blur-md text-honey-200 border border-honey-400/40 text-[10px] font-700 uppercase tracking-[0.18em] flex items-center gap-2 max-w-[45%]">
+                <span className="w-1.5 h-1.5 rounded-full bg-honey-300 shrink-0" />
+                <span className="truncate">{current.afterTitle}</span>
+              </div>
+
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <img
+                  src={current.beforeImage}
+                  alt={current.beforeTitle}
+                  className="absolute inset-0 w-full h-full object-cover max-w-none grayscale-[35%] brightness-90"
+                  style={{
+                    width: containerRef.current ? containerRef.current.clientWidth : "100%"
+                  }}
+                  draggable={false}
+                />
+                <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-forest-950/80 backdrop-blur-md text-cream-50 border border-cream-50/20 text-[10px] font-700 uppercase tracking-[0.18em] flex items-center gap-2 whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-apple-400" />
+                  {current.beforeTitle}
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Interactive Drag-and-Compare Image Slider */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Specs List */}
-            <div className="lg:col-span-4 space-y-3.5">
-              {/* Before Card */}
-              <div className={`p-5 rounded-2xl border transition-all duration-300 ${
-                sliderPosition > 50 
-                  ? "bg-red-500/10 border-red-500/40 shadow-xs" 
-                  : "bg-secondary/40 border-border opacity-80"
-              }`}>
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-400 flex items-center gap-1.5">
-                    <X className="w-4 h-4 text-red-500 shrink-0" /> {current.beforeTitle}
-                  </span>
-                  <span className="text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Traditional</span>
+              <div
+                className="absolute top-0 bottom-0 w-px bg-cream-50 shadow-[0_0_24px_rgba(233,214,168,0.9)]"
+                style={{ left: `${sliderPosition}%` }}
+              >
+                <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-cream-50/90 backdrop-blur-md text-forest-900 shadow-2xl flex items-center justify-center border border-honey-400 group-hover:scale-110 active:scale-95 transition-transform duration-300">
+                  <MoveHorizontal className="w-5 h-5" />
                 </div>
-                <ul className="space-y-2 text-xs text-muted-foreground font-medium">
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-3 px-1 gap-2">
+              <span className="hidden sm:inline">← {current.beforeTitle}</span>
+              <span className="font-700 text-forest-900 mx-auto sm:mx-0 text-center">↔ Drag handle or touch left/right to compare</span>
+              <span className="hidden sm:inline">{current.afterTitle} →</span>
+            </div>
+
+            <div className="mt-8 grid sm:grid-cols-2 gap-4">
+              <div className={`p-6 rounded-[1.25rem] border transition-all duration-500 ${
+                sliderPosition > 50 ? "border-apple-300 bg-apple-50" : "border-border bg-cream-100/60"
+              }`}>
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <span className="text-[11px] font-700 uppercase tracking-[0.16em] text-apple-600 flex items-center gap-1.5">
+                    <X className="w-4 h-4 shrink-0" /> {current.beforeTitle}
+                  </span>
+                  <span className="text-[10px] font-700 text-muted-foreground">Traditional</span>
+                </div>
+                <ul className="space-y-2.5 text-sm text-charcoal-700/80">
                   {current.beforePoints.map((pt, i) => (
-                    <li key={i} className="flex items-start gap-2 leading-relaxed">
-                      <span className="text-red-500 font-bold shrink-0 mt-0.5">✕</span>
+                    <li key={i} className="flex items-start gap-2.5 leading-relaxed">
+                      <span className="text-apple-500 shrink-0 mt-0.5">✕</span>
                       <span>{pt}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* After Card */}
-              <div className={`p-5 rounded-2xl border transition-all duration-300 ${
-                sliderPosition <= 50 
-                  ? "bg-accent border-emerald-500/50 shadow-lg shadow-emerald-950/15 ring-1 ring-emerald-500/30" 
-                  : "bg-card border-border"
+              <div className={`p-6 rounded-[1.25rem] border transition-all duration-500 ${
+                sliderPosition <= 50 ? "border-forest-900 bg-forest-900 text-cream-50 shadow-luxe" : "border-border bg-card"
               }`}>
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-primary shrink-0" /> {current.afterTitle}
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <span className={`text-[11px] font-700 uppercase tracking-[0.16em] flex items-center gap-1.5 ${sliderPosition <= 50 ? "text-honey-300" : "text-forest-700"}`}>
+                    <Check className="w-4 h-4 shrink-0" /> {current.afterTitle}
                   </span>
-                  <span className="text-[10px] font-bold text-primary bg-accent border border-primary/20 px-2.5 py-0.5 rounded-full">
+                  <span className={`text-[10px] font-700 ${sliderPosition <= 50 ? "text-honey-200" : "text-forest-700"}`}>
                     Abraq Guaranteed
                   </span>
                 </div>
-                <ul className="space-y-2 text-xs text-foreground font-bold">
+                <ul className="space-y-2.5 text-sm">
                   {current.afterPoints.map((pt, i) => (
-                    <li key={i} className="flex items-start gap-2 leading-relaxed">
-                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-2.5 leading-relaxed">
+                      <Check className={`w-4 h-4 shrink-0 mt-0.5 ${sliderPosition <= 50 ? "text-honey-300" : "text-forest-600"}`} />
                       <span>{pt}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
-
-            {/* Right Interactive Image Slider */}
-            <div className="lg:col-span-8">
-              {/* Slider Control HUD: Quick Snap Presets & Auto-Scan */}
-              <div className="flex items-center justify-between gap-2 mb-3 px-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] font-bold text-muted-foreground mr-1 hidden sm:inline">Presets:</span>
-                  <button
-                    onClick={() => { setIsAutoScanning(false); setSliderPosition(100); }}
-                    className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                      sliderPosition > 80 
-                        ? "bg-red-600 text-white shadow-xs" 
-                        : "bg-secondary text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    100% Before
-                  </button>
-                  <button
-                    onClick={() => { setIsAutoScanning(false); setSliderPosition(50); }}
-                    className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                      sliderPosition >= 40 && sliderPosition <= 60 
-                        ? "bg-foreground text-background shadow-xs" 
-                        : "bg-secondary text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    50 / 50 Split
-                  </button>
-                  <button
-                    onClick={() => { setIsAutoScanning(false); setSliderPosition(0); }}
-                    className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                      sliderPosition < 20 
-                        ? "bg-primary text-white shadow-xs" 
-                        : "bg-secondary text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    100% After
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsAutoScanning(!isAutoScanning)}
-                    className={`px-3.5 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                      isAutoScanning
-                        ? "bg-primary text-white shadow-md animate-pulse"
-                        : "bg-secondary hover:bg-muted text-foreground"
-                    }`}
-                  >
-                    {isAutoScanning ? (
-                      <>
-                        <Pause className="w-3 h-3 fill-current" />
-                        <span>Pause Scan</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3 h-3 fill-current" />
-                        <span>Auto-Scan</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Slider Viewport Container */}
-              <div
-                ref={containerRef}
-                onMouseDown={() => { setIsAutoScanning(false); setIsDragging(true); }}
-                onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-                className="relative aspect-4/3 sm:aspect-16/10 rounded-3xl overflow-hidden shadow-2xl border-2 border-border select-none cursor-ew-resize group"
-              >
-                {/* AFTER IMAGE */}
-                <img
-                  src={current.afterImage}
-                  alt={current.afterTitle}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-102"
-                  draggable={false}
-                />
-                <div className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-xl bg-black/80 backdrop-blur-md text-primary/90 border border-emerald-500/50 text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  {current.afterTitle}
-                </div>
-
-                {/* BEFORE IMAGE (Clipped) */}
-                <div
-                  className="absolute inset-0 overflow-hidden"
-                  style={{ width: `${sliderPosition}%` }}
-                >
-                  <img
-                    src={current.beforeImage}
-                    alt={current.beforeTitle}
-                    className="absolute inset-0 w-full h-full object-cover max-w-none filter brightness-90 transition-transform duration-700 group-hover:scale-102"
-                    style={{
-                      width: containerRef.current ? containerRef.current.clientWidth : "100%"
-                    }}
-                    draggable={false}
-                  />
-                  <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-xl bg-black/85 backdrop-blur-md text-white border border-white/25 text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-red-400" />
-                    {current.beforeTitle}
-                  </div>
-                </div>
-
-                {/* Divider Line & Handle */}
-                <div
-                  className="absolute top-0 bottom-0 w-1 bg-gradient-to-b from-white via-emerald-300 to-white shadow-[0_0_20px_rgba(0,229,117,0.9)] cursor-ew-resize"
-                  style={{ left: `${sliderPosition}%` }}
-                >
-                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-card text-foreground shadow-2xl flex items-center justify-center border-2 border-emerald-500 group-hover:scale-110 active:scale-95 transition-transform duration-200">
-                    <MoveHorizontal className="w-5 h-5 text-primary" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Slider Footer */}
-              <div className="flex items-center justify-between text-xs text-muted-foreground font-medium mt-3 px-1">
-                <span>← Traditional Seedling</span>
-                <span className="font-bold text-foreground">↔ Drag handle or touch left/right to compare</span>
-                <span>Abraq M9 High-Density →</span>
-              </div>
-            </div>
-
           </div>
         </div>
-
       </div>
     </section>
   );

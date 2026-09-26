@@ -1,6 +1,27 @@
 import { jsPDF } from "jspdf";
 import type { EstimateInput, EstimateResult } from "./calculations";
 import { formatINR } from "./calculations";
+import { company } from "../data/company";
+
+// Abraq brand mark (same geometry as components/brand/AbraqLogo.tsx), drawn as vectors
+const MARK_ORANGE: [number, number][] = [[320, 100], [415, 100], [118, 670], [20, 670]];
+const MARK_GREEN: [number, number][][] = [
+  [[455, 152], [548, 328], [452, 328], [408, 238]],
+  [[350, 326], [450, 326], [318, 590], [600, 590], [548, 495], [455, 495], [455, 415], [600, 415], [745, 670], [165, 670]],
+];
+
+function drawBrandMark(doc: jsPDF, x: number, y: number, height: number) {
+  const k = height / 586;
+  const poly = (pts: [number, number][]) => {
+    const [x0, y0] = pts[0];
+    const deltas = pts.slice(1).map(([px, py], i) => [(px - pts[i][0]) * k, (py - pts[i][1]) * k]);
+    doc.lines(deltas, x + (x0 - 10) * k, y + (y0 - 92) * k, [1, 1], "F", true);
+  };
+  doc.setFillColor(241, 141, 19);
+  poly(MARK_ORANGE);
+  doc.setFillColor(245, 241, 232);
+  MARK_GREEN.forEach(poly);
+}
 
 export function generateOrchardQuotePDF(
   input: EstimateInput,
@@ -19,15 +40,17 @@ export function generateOrchardQuotePDF(
   doc.setFillColor(15, 61, 46); // dark green
   doc.rect(0, 0, 210, 38, "F");
 
+  drawBrandMark(doc, 15, 7, 24);
+
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("ABRAQ NURSERIES LLP", 15, 18);
+  doc.text("ABRAQ NURSERIES LLP", 50, 18);
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("Srinagar, Jammu & Kashmir · Nursery Plants, Saplings & Orchard Development", 15, 26);
-  doc.text("Srinagar · Pulwama · Chadoora Soil Lab | Tel: 0194-796-1490 | info@abraqnurseries.com", 15, 32);
+  doc.text("Srinagar, Jammu & Kashmir · Nursery Plants, Saplings & Orchard Development", 50, 26);
+  doc.text(`Srinagar · Pulwama · Chadoora Soil Lab | Tel: ${company.phone} | ${company.email}`, 50, 32);
 
   // Document Title & Reference
   doc.setTextColor(21, 128, 61); // Primary green

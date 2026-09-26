@@ -5,13 +5,17 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [pathname]);
 
   return (
-    <div key={pathname} className="animate-fade-in">
-      {children}
-    </div>
+    <>
+      {/* Pine curtain lifts on every route change */}
+      <div key={`curtain-${pathname}`} className="page-curtain" aria-hidden="true" />
+      <main key={pathname} className="page-enter">
+        {children}
+      </main>
+    </>
   );
 }
 
