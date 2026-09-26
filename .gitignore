@@ -49,3 +49,7 @@ next-env.d.ts
 # Temporary / Scratch
 scratch/
 .system_generated/
+
+# Full-resolution photo archive (originals live in Google Drive; the site uses
+# the web versions in public/images/real/)
+src/assets/images/real/
